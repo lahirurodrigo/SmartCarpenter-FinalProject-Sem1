@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.SmartCarpenter.controller.DashboardFormController">
+    <children>
+        <AnchorPane layoutY="3.0" prefHeight="600.0" prefWidth="180.0" style="-fx-background-color: white;">
+            <children>
+                <JFXButton fx:id="btnDashboard" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="130.0" onAction="#btnDashboardOnAction" prefHeight="40.0" prefWidth="150.0" text="Dashboard">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXButton fx:id="btnTools" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="410.0" onAction="#btnToolsOnAction" prefHeight="40.0" prefWidth="150.0" text="Tools">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXButton fx:id="btnSalary" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="450.0" onAction="#btnSalaryOnAction" prefHeight="40.0" prefWidth="150.0" text="Salary">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <opaqueInsets>
+                        <Insets bottom="10.0" top="10.0" />
+                    </opaqueInsets>
+                </JFXButton>
+                <JFXButton fx:id="btnPayment" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="290.0" onAction="#btnPaymentOnAction" prefHeight="40.0" prefWidth="150.0" text="Payments">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXButton fx:id="btnMaterials" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="370.0" onAction="#btnMaterialsOnAction" prefHeight="40.0" prefWidth="150.0" text="Materials">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXButton fx:id="btnEmployee" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="330.0" onAction="#btnEmployeeOnAction" prefHeight="40.0" prefWidth="150.0" text="Employee">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXButton fx:id="btnOrder" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="250.0" onAction="#btnOrderOnAction" prefHeight="40.0" prefWidth="150.0" text="Order">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="20.0" layoutY="177.0">
+                    <image>
+                        <Image url="@../icon/customer-management-4-256.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="21.0" layoutY="457.0">
+                    <image>
+                        <Image url="@../icon/saving-money.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="33.0" fitWidth="29.0" layoutX="20.0" layoutY="374.0">
+                    <image>
+                        <Image url="@../icon/wood.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="33.0" fitWidth="29.0" layoutX="21.0" layoutY="334.0">
+                    <image>
+                        <Image url="@../icon/carpenter.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="20.0" layoutY="258.0">
+                    <image>
+                        <Image url="@../icon/orders-icon.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="33.0" fitWidth="40.0" layoutX="16.0" layoutY="414.0">
+                    <image>
+                        <Image url="@../icon/tool-box.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="21.0" layoutY="298.0">
+                    <image>
+                        <Image url="@../icon/payment-method.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="23.0" layoutY="138.0">
+                    <image>
+                        <Image url="@../icon/monitor.png" />
+                    </image>
+                </ImageView>
+                <JFXButton fx:id="btnFurniture" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="210.0" onAction="#btnFurnitureOnAction" prefHeight="40.0" prefWidth="150.0" text="Furniture">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <ImageView fitHeight="26.0" fitWidth="29.0" layoutX="20.0" layoutY="217.0">
+                    <image>
+                        <Image url="@../icon/furniture.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="34.0" layoutY="545.0">
+                    <image>
+                        <Image url="@../icon/logout.png" />
+                    </image>
+                </ImageView>
+                <JFXButton fx:id="btnLogout" layoutX="34.0" layoutY="545.0" onAction="#btnLogoutOnAction" prefHeight="24.0" prefWidth="110.0" text="Logout" />
+                <JFXButton fx:id="btnCustomer" buttonType="RAISED" contentDisplay="TOP" layoutX="15.0" layoutY="170.0" onAction="#btnCustomerOnAction" prefHeight="40.0" prefWidth="150.0" text="Customer">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <ImageView fitHeight="128.0" fitWidth="150.0" layoutX="14.0" layoutY="4.0">
+                    <image>
+                        <Image url="@../icon/Add_a_heading-removebg-preview.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="rootVary" layoutX="180.0" prefHeight="600.0" prefWidth="720.0">
+            <children>
+                <AnchorPane fx:id="rootDash" prefHeight="600.0" prefWidth="720.0">
+                    <children>
+                        <Label layoutX="10.0" layoutY="10.0" text="Dashboard">
+                            <font>
+                                <Font name="System Bold" size="21.0" />
+                            </font>
+                        </Label>
+                        <Pane layoutX="47.0" layoutY="54.0" prefHeight="118.0" prefWidth="200.0" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

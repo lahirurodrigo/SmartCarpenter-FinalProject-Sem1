@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.SmartCarpenter.controller.CustomerFormController">
+    <children>
+        <Label layoutX="247.0" layoutY="14.0" text="Customer Manage" textFill="#2c3e50">
+            <font>
+                <Font name="System Bold" size="19.0" />
+            </font>
+        </Label>
+        <TextField fx:id="txtId" layoutX="486.0" layoutY="73.0" onAction="#txtSearchOnAction" prefHeight="33.0" prefWidth="177.0" promptText="id" />
+        <TextField fx:id="txtName" layoutX="486.0" layoutY="117.0" prefHeight="33.0" prefWidth="177.0" promptText="name" />
+        <TextField fx:id="txtAddress" layoutX="486.0" layoutY="166.0" prefHeight="33.0" prefWidth="177.0" promptText="address" />
+        <TextField fx:id="txtTel" layoutX="486.0" layoutY="212.0" prefHeight="33.0" prefWidth="177.0" promptText="tel" />
+        <JFXButton fx:id="btnSave" buttonType="RAISED" contentDisplay="RIGHT" layoutX="583.0" layoutY="300.0" onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF;" text="Save">
+            <font>
+                <Font name="System Bold" size="10.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </JFXButton>
+        <ImageView fitHeight="179.0" fitWidth="177.0" layoutX="212.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../icon/customer+information+personal+profile+user+icon-1320086045331670685.png" />
+            </image>
+        </ImageView>
+        <JFXButton fx:id="btnUpdate" buttonType="RAISED" contentDisplay="RIGHT" layoutX="495.0" layoutY="300.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Update">
+            <font>
+                <Font name="System Bold" size="10.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </JFXButton>
+        <JFXButton fx:id="btnView" buttonType="RAISED" contentDisplay="RIGHT" layoutX="402.0" layoutY="300.0" onAction="#btnViewOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF;" text="View">
+            <font>
+                <Font name="System Bold" size="10.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </JFXButton>
+        <JFXButton fx:id="btnDelete" buttonType="RAISED" contentDisplay="RIGHT" layoutX="305.0" layoutY="300.0" onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #d91a1a;" text="Delete" textFill="#000000b0">
+            <font>
+                <Font name="System Bold" size="10.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </JFXButton>
+    </children>
+</AnchorPane>

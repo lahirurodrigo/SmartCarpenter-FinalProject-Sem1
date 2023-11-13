@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.SmartCarpenter.controller.FurnitureFormController">
+    <children>
+        <Label layoutX="20.0" layoutY="20.0" text="Furniture">
+            <font>
+                <Font name="System Bold" size="21.0" />
+            </font>
+        </Label>
+        <ImageView fitHeight="171.0" fitWidth="180.0" layoutX="135.0" layoutY="91.0">
+            <image>
+                <Image url="@../icon/furniture.png" />
+            </image>
+        </ImageView>
+        <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="315.0" layoutY="310.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #d91a1a;" text="Delete" textFill="#000000b0">
+            <font>
+                <Font name="System Bold" size="10.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </JFXButton>
+        <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="412.0" layoutY="310.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF;" text="View">
+            <font>
+                <Font name="System Bold" size="10.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </JFXButton>
+        <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="505.0" layoutY="310.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF;" text="Update">
+            <font>
+                <Font name="System Bold" size="10.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </JFXButton>
+        <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="593.0" layoutY="310.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF;" text="Save">
+            <font>
+                <Font name="System Bold" size="10.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </JFXButton>
+        <TextField fx:id="txtId" layoutX="496.0" layoutY="83.0" onAction="#txtSearchOnAction" prefHeight="33.0" prefWidth="177.0" promptText="code" />
+        <TextField fx:id="txtName" layoutX="496.0" layoutY="127.0" prefHeight="33.0" prefWidth="177.0" promptText="description" />
+        <TextField fx:id="txtAddress" layoutX="496.0" layoutY="176.0" prefHeight="33.0" prefWidth="177.0" promptText="qty on hand" />
+        <TextField fx:id="txtTel" layoutX="496.0" layoutY="222.0" prefHeight="33.0" prefWidth="177.0" promptText="uni price" />
+    </children>
+</AnchorPane>
