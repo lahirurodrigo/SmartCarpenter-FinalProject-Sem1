@@ -2,6 +2,7 @@ package lk.ijse.SmartCarpenter.model;
 
 import lk.ijse.SmartCarpenter.db.DbConnection;
 import lk.ijse.SmartCarpenter.dto.CustomerDto;
+import org.w3c.dom.ls.LSOutput;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

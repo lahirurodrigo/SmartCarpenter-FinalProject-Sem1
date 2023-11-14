@@ -15,6 +15,7 @@ public class CustomerDto {
         this.name = name;
         this.address = address;
         this.tel = tel;
+
     }
 
     public String getId() {

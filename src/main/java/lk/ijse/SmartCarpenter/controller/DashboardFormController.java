@@ -76,8 +76,10 @@ public class DashboardFormController {
     }
 
     @FXML
-    void btnFurnitureOnAction(ActionEvent event) {
-
+    void btnFurnitureOnAction(ActionEvent event) throws IOException {
+        Parent rootNew = FXMLLoader.load(getClass().getResource("/view/furniture_form.fxml"));
+        this.rootVary.getChildren().clear();
+        this.rootVary.getChildren().add(rootNew);
     }
 
     @FXML
@@ -91,8 +93,10 @@ public class DashboardFormController {
     }
 
     @FXML
-    void btnOrderOnAction(ActionEvent event) {
-
+    void btnOrderOnAction(ActionEvent event) throws IOException {
+        Parent rootNew = FXMLLoader.load(getClass().getResource("/view/order_form.fxml"));
+        this.rootVary.getChildren().clear();
+        this.rootVary.getChildren().add(rootNew);
     }
 
     @FXML
