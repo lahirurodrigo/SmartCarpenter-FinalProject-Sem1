@@ -2,15 +2,20 @@ package lk.ijse.SmartCarpenter.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.SmartCarpenter.dto.tm.CartTm;
 
-public class OrderFormController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class OrderFormController implements Initializable {
 
     @FXML
     private JFXButton btnAddToCart;
@@ -25,6 +30,9 @@ public class OrderFormController {
     private TableColumn<?, ?> colAction;
 
     @FXML
+    private TableColumn<?, ?> colCodeInfo;
+
+    @FXML
     private TableColumn<?, ?> colDescription;
 
     @FXML
@@ -34,10 +42,19 @@ public class OrderFormController {
     private TableColumn<?, ?> colQty;
 
     @FXML
+    private TableColumn<?, ?> colQuanInfo;
+
+    @FXML
     private TableColumn<?, ?> colTotal;
 
     @FXML
     private TableColumn<?, ?> colUnitPrice;
+
+    @FXML
+    private DatePicker dtpDue;
+
+    @FXML
+    private DatePicker dtpPlaced;
 
     @FXML
     private Label lblCustomerName;
@@ -47,9 +64,6 @@ public class OrderFormController {
 
     @FXML
     private Label lblNetTotal;
-
-    @FXML
-    private Label lblOrderDate;
 
     @FXML
     private Label lblOrderId;
@@ -67,10 +81,40 @@ public class OrderFormController {
     private TableView<?> tblOrderCart;
 
     @FXML
+    private TableView<?> tblStockInfo;
+
+    @FXML
     private TextField txtQty;
+
+    private ObservableList<CartTm> obList = FXCollections.observableArrayList();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setCellValueFactory();
+    }
+
+    private void setCellValueFactory() {
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colAction.setCellValueFactory(new PropertyValueFactory<>("btn"));
+    }
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
+        String code = (String) cmbItemCode.getValue();
+        String desc = lblDescription.getText();
+        int qty = Integer.parseInt(txtQty.getText());
+        double unitPrice = Double.parseDouble(lblUnitPrice.getText());
+        double total = qty*unitPrice;
+        Button btn = new Button("Remove");
+
+        CartTm cartTm = new CartTm(code,desc,qty,unitPrice,total,btn);
+
+        obList.add(cartTm);
+        txtQty.clear();
+
 
     }
 
@@ -103,4 +147,6 @@ public class OrderFormController {
     void txtQtyOnAction(ActionEvent event) {
 
     }
+
+
 }

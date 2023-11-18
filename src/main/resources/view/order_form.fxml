@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -13,10 +14,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="720.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.SmartCarpenter.controller.OrderFormController">
    <children>
-      <AnchorPane fx:id="pane" layoutY="70.0" prefHeight="650.0" prefWidth="761.0">
+      <AnchorPane fx:id="pane" layoutY="70.0" prefHeight="650.0" prefWidth="790.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" prefHeight="19.0" prefWidth="330.0" text="Place Order Form" textFill="#5e5c5c">
                <font>
@@ -29,12 +29,7 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <Label layoutX="457.0" layoutY="62.0" text="Order date:" />
-            <Label fx:id="lblOrderDate" layoutX="636.0" layoutY="61.0" textFill="#278d7f">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Label>
+            <Label layoutX="179.0" layoutY="62.0" text="Placed date:" />
             <Label layoutX="14.0" layoutY="122.0" text="Customer Id:" />
             <JFXComboBox fx:id="cmbCustomerId" layoutX="106.0" layoutY="117.0" onAction="#cmbCustomerOnAction" prefHeight="21.0" prefWidth="203.0" />
             <Label layoutX="457.0" layoutY="119.0" text="Customer Name:" />
@@ -126,6 +121,9 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
+            <Label layoutX="480.0" layoutY="62.0" text="Due date:" />
+            <DatePicker fx:id="dtpDue" layoutX="568.0" layoutY="60.0" prefHeight="24.0" prefWidth="183.0" />
+            <DatePicker fx:id="dtpPlaced" layoutX="269.0" layoutY="58.0" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="70.0" prefWidth="1180.0" style="-fx-background-color: white;">
@@ -137,6 +135,19 @@
             </Label>
          </children>
       </AnchorPane>
-      <Pane layoutX="836.0" layoutY="79.0" prefHeight="631.0" prefWidth="338.0" style="-fx-background-color: white; -fx-background-radius: 25;" />
+      <Pane layoutX="836.0" layoutY="79.0" prefHeight="631.0" prefWidth="338.0" style="-fx-background-color: white; -fx-background-radius: 25;">
+         <children>
+            <TableView fx:id="tblStockInfo" layoutX="27.0" layoutY="54.0" prefHeight="566.0" prefWidth="284.0">
+              <columns>
+                <TableColumn fx:id="colCodeInfo" prefWidth="109.0" text="Item" />
+                <TableColumn fx:id="colQuanInfo" prefWidth="174.0" text="Quantity in hand" />
+              </columns>
+            </TableView>
+            <Label layoutX="36.0" layoutY="14.0" text="Stock Information">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children></Pane>
    </children>
 </AnchorPane>
