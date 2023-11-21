@@ -33,7 +33,7 @@
             <Label layoutX="14.0" layoutY="122.0" text="Customer Id:" />
             <JFXComboBox fx:id="cmbCustomerId" layoutX="106.0" layoutY="117.0" onAction="#cmbCustomerOnAction" prefHeight="21.0" prefWidth="203.0" />
             <Label layoutX="457.0" layoutY="119.0" text="Customer Name:" />
-            <Label fx:id="lblCustomerName" layoutX="637.0" layoutY="118.0" textFill="#278d7f">
+            <Label fx:id="lblCustomerName" layoutX="572.0" layoutY="118.0" prefHeight="21.0" prefWidth="183.0" textFill="#278d7f">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -41,19 +41,19 @@
             <Label layoutX="14.0" layoutY="176.0" text="Code:" />
             <JFXComboBox fx:id="cmbItemCode" layoutX="11.0" layoutY="201.0" onAction="#cmbItemOnAction" prefHeight="24.0" prefWidth="183.0" />
             <Label layoutX="263.0" layoutY="180.0" text="Description:" />
-            <Label fx:id="lblDescription" layoutX="232.0" layoutY="216.0" textFill="#278d7f">
+            <Label fx:id="lblDescription" layoutX="265.0" layoutY="203.0" prefHeight="21.0" prefWidth="457.0" textFill="#278d7f">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
             <Label layoutX="10.0" layoutY="244.0" text="Unit Price:" />
-            <Label fx:id="lblUnitPrice" layoutX="85.0" layoutY="243.0" prefHeight="21.0" prefWidth="0.0" textFill="#278d7f">
+            <Label fx:id="lblUnitPrice" layoutX="85.0" layoutY="243.0" prefHeight="21.0" prefWidth="133.0" textFill="#278d7f">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
             <Label layoutX="263.0" layoutY="244.0" text="Qty. On Hand:" />
-            <Label fx:id="lblQtyOnHand" layoutX="358.0" layoutY="242.0" prefHeight="21.0" prefWidth="0.0" textFill="#278d7f">
+            <Label fx:id="lblQtyOnHand" layoutX="358.0" layoutY="242.0" prefHeight="21.0" prefWidth="111.0" textFill="#278d7f">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -82,7 +82,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="641.0" layoutY="556.0" onAction="#btnPlaceOrderOnAction" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #34495e;" text="Place Order" textFill="WHITE">
+            <JFXButton fx:id="btnPlaceOrder" buttonType="RAISED" layoutX="641.0" layoutY="556.0" onAction="#btnPlaceOrderOnAction" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #34495e;" text="Place Order" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -94,24 +94,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="321.0" layoutY="118.0" onAction="#btnNewCustomerOnAction" prefHeight="21.0" prefWidth="74.0" style="-fx-background-color: #2ecc71;" text="NEW" textFill="WHITE">
-               <graphic>
-                  <ImageView fitHeight="17.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../Desktop/Thogakade/src/main/resources/icon/new.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="557.0" layoutY="557.0" onAction="#btnBackOnAction" prefHeight="33.0" prefWidth="66.0" style="-fx-background-color: #bdc3c7;" text="Back">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </JFXButton>
-            <Label fx:id="lblNetTotal" layoutX="102.0" layoutY="512.0" textFill="#b51313">
+            <Label fx:id="lblNetTotal" layoutX="105.0" layoutY="561.0" prefHeight="26.0" prefWidth="133.0" textFill="#b51313">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>

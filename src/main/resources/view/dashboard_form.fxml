@@ -7,6 +7,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="root" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.SmartCarpenter.controller.DashboardFormController">
@@ -121,7 +122,29 @@
         </AnchorPane>
         <AnchorPane fx:id="rootVary" layoutX="180.0" prefHeight="720.0" prefWidth="1100.0">
             <children>
-                <AnchorPane fx:id="rootDash" layoutY="70.0" prefHeight="650.0" prefWidth="1180.0" />
+                <AnchorPane fx:id="rootDash" layoutY="70.0" prefHeight="650.0" prefWidth="1180.0">
+               <children>
+                  <Pane layoutX="390.0" layoutY="41.0" prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: white; -fx-background-radius: 25;">
+                     <children>
+                        <Label layoutX="29.0" layoutY="21.0" text="Latest order dues" />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="27.0" layoutY="41.0" prefHeight="200.0" prefWidth="298.0" style="-fx-background-color: white; -fx-background-radius: 25;">
+                     <children>
+                        <Label layoutX="31.0" layoutY="22.0" text="Total Employee" />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="880.0" layoutY="32.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 25;">
+                     <children>
+                        <Label layoutX="24.0" layoutY="29.0" text="Total Items" />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="27.0" layoutY="272.0" prefHeight="200.0" prefWidth="472.0" style="-fx-background-color: white; -fx-background-radius: 25;">
+                     <children>
+                        <Label layoutX="31.0" layoutY="22.0" text="Label" />
+                     </children>
+                  </Pane>
+               </children></AnchorPane>
               <AnchorPane prefHeight="70.0" prefWidth="1180.0" style="-fx-background-color: white;" />
             <Label layoutX="15.0" layoutY="10.0" prefWidth="129.0" text="Dashboard">
                <font>

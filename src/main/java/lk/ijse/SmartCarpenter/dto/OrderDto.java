@@ -1,7 +1,10 @@
 package lk.ijse.SmartCarpenter.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import lk.ijse.SmartCarpenter.dto.tm.CartTm;
 import lombok.*;
 
 @Getter
@@ -14,4 +17,6 @@ public class OrderDto {
     private LocalDate placeDate;
     private LocalDate dueDate;
     private int duration;
+    private String cusId;
+
 }

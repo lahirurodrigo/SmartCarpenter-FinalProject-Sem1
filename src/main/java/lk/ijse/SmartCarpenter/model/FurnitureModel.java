@@ -2,6 +2,7 @@ package lk.ijse.SmartCarpenter.model;
 
 import lk.ijse.SmartCarpenter.db.DbConnection;
 import lk.ijse.SmartCarpenter.dto.FurnitureDto;
+import lk.ijse.SmartCarpenter.dto.tm.CartTm;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -105,5 +106,50 @@ public class FurnitureModel {
             resultSet.getInt(4));
         }
         return null;
+    }
+
+    public static boolean updateItem(List<CartTm> list) throws SQLException {
+
+        for (CartTm tm : list){
+            if(!updateQty(tm.getCode(),tm.getQty())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean updateQty(String code, int qty) throws SQLException {
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        String sql = "UPDATE furniture SET qty_on_hand = qty_on_hand - ? WHERE f_code = ?";
+        PreparedStatement pstm = connection.prepareStatement(sql);
+
+        pstm.setInt(1, qty);
+        pstm.setString(2, code);
+
+        return pstm.executeUpdate() > 0; //false
+    }
+
+    public static FurnitureDto searchItem(String code) throws SQLException {
+
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM furniture WHERE f_code = ?");
+
+        pstm.setString(1,code);
+        ResultSet rs = pstm.executeQuery();
+
+        FurnitureDto dto = null;
+
+        if(rs.next()){
+            dto = new FurnitureDto(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getDouble(3),
+                    rs.getInt(4)
+
+            );
+        }
+        return dto;
     }
 }
