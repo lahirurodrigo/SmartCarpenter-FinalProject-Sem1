@@ -37,16 +37,19 @@ public class PlaceOrderModel {
                         connection.commit();
                     }else{
                         connection.rollback();
+                        return false;
                     }
                 }else{
                     connection.rollback();
+                    return false;
                 }
             }else{
                 connection.rollback();
+                return false;
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return false;
         }finally {
             connection.setAutoCommit(true);
         }

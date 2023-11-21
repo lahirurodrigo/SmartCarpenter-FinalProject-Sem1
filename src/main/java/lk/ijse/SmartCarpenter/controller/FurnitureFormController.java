@@ -8,17 +8,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.SmartCarpenter.dto.FurnitureDto;
+import lk.ijse.SmartCarpenter.dto.ManufacturingDetailDto;
 import lk.ijse.SmartCarpenter.dto.tm.FurnitureTm;
+import lk.ijse.SmartCarpenter.model.AddFurnitureModel;
 import lk.ijse.SmartCarpenter.model.FurnitureModel;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -59,6 +59,25 @@ public class FurnitureFormController implements Initializable {
 
     @FXML
     private JFXComboBox<String> cmbCodeView;
+
+    @FXML
+    private JFXComboBox<String> cmbEmpId;
+
+    @FXML
+    private JFXComboBox<String> cmbEmpIdUpdate;
+
+
+    @FXML
+    private TextField txtLabourCost;
+
+    @FXML
+    private JFXTextField txtLabourCostUpdate;
+
+    @FXML
+    private DatePicker dtpDate;
+
+    @FXML
+    private DatePicker dtpDateUpdate;
 
     @FXML
     private TextField txtCode;
@@ -103,6 +122,9 @@ public class FurnitureFormController implements Initializable {
         String description = txtWidth.getText()+"*"+txtHeight.getText()+" "+txtDescription.getText();
         double unitPrice = Double.valueOf(txtUnitPrice.getText());
         int qauntity = Integer.parseInt(txtQuantity.getText());
+        String empId = cmbEmpId.getValue();
+        double labourCost = Double.parseDouble(txtLabourCost.getText());
+        LocalDate date = dtpDate.getValue();
 
         if (code.isEmpty() || description.isEmpty() || unitPrice == 0  || qauntity == 0){
             new Alert(Alert.AlertType.ERROR,"Fields empty").showAndWait();
@@ -110,24 +132,13 @@ public class FurnitureFormController implements Initializable {
         }
 
         FurnitureDto dto = new FurnitureDto(code,description,unitPrice,qauntity);
+        ManufacturingDetailDto dtoMan = new ManufacturingDetailDto(code,empId,labourCost,date);
 
         try {
-            boolean isSaved = FurnitureModel.addItem(dto);
-
-            if (isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION,"Added successfully").showAndWait();
-                loadAllFurnitures();
-                loadFurnitureCodes();
-                clearFields();
-            }
-            else{
-                new Alert(Alert.AlertType.ERROR,"Error").showAndWait();
-                //new Alert(Alert.AlertType.ERROR,"Error").showAndWait();
-            }
+            boolean isAdded =AddFurnitureModel.addFurnitureItem(dto,dtoMan);
         } catch (SQLException e) {
-            e.fillInStackTrace();
+            throw new RuntimeException(e);
         }
-
 
     }
 
@@ -149,6 +160,9 @@ public class FurnitureFormController implements Initializable {
         txtQuantityView.clear();
         txtUniPriceUpdate.clear();
         txtUnitPriceView.clear();
+        txtLabourCost.clear();
+        txtLabourCostUpdate.clear();
+
     }
 
     @FXML

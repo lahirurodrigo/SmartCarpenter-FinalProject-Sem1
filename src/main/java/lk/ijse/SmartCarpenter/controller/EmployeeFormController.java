@@ -5,10 +5,16 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import lk.ijse.SmartCarpenter.model.EmployeeModel;
 
-public class EmployeeFormController {
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
+public class EmployeeFormController implements Initializable {
 
     @FXML
     private JFXButton BtnDeleteSalary;
@@ -76,7 +82,11 @@ public class EmployeeFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-
+        String id = lblId.getText();
+        String name = txtName.getText();
+        String position = txtPosition.getText();
+        String gender = (String) cmbGender.getValue();
+        int age = Integer.parseInt(txtAge.getText());
     }
 
     @FXML
@@ -89,4 +99,20 @@ public class EmployeeFormController {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        generateNextSalaryId();
+        generateNextEmployeeId();
+    }
+
+    private void generateNextEmployeeId() {
+        try {
+            lblId.setText(EmployeeModel.getNextEmployeeId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void generateNextSalaryId() {
+    }
 }
