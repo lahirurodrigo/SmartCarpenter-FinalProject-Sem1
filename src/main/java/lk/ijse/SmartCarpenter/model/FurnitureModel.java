@@ -111,7 +111,8 @@ public class FurnitureModel {
     public static boolean updateItem(List<CartTm> list) throws SQLException {
 
         for (CartTm tm : list){
-            if(!updateQty(tm.getCode(),tm.getQty())){
+            boolean isUpdated = updateQty(tm.getCode(), tm.getQty());
+            if(isUpdated == false){
                 return false;
             }
         }
@@ -127,7 +128,7 @@ public class FurnitureModel {
         pstm.setInt(1, qty);
         pstm.setString(2, code);
 
-        return pstm.executeUpdate() > 0; //false
+        return pstm.executeUpdate() > 0;
     }
 
     public static FurnitureDto searchItem(String code) throws SQLException {

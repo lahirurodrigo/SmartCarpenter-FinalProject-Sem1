@@ -19,6 +19,8 @@ import lk.ijse.SmartCarpenter.model.CustomerModel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomerFormController {
     @FXML
@@ -107,8 +109,8 @@ public class CustomerFormController {
         String address = txtAddress.getText();
         String tel = txtTel.getText();
 
-        if (id.isEmpty() || name.isEmpty() || address.isEmpty() || tel.isEmpty()){
-            new Alert(Alert.AlertType.ERROR,"Fields empty").showAndWait();
+        boolean isValid = validateCustomer(id,name,address,tel);
+        if (isValid == false){
             return;
         }
 
@@ -138,8 +140,9 @@ public class CustomerFormController {
         String address = txtAddressUpdate.getText();
         String tel = txtTelUpdate.getText();
 
-        if (id.isEmpty() || name.isEmpty() || address.isEmpty() || tel.isEmpty()){
-            new Alert(Alert.AlertType.ERROR,"fields empty").showAndWait();
+        boolean isValid = validateCustomer(id, name,address,tel);
+        if (isValid == false){
+            return;
         }
 
         CustomerDto dto = new CustomerDto(id,name,address,tel);
@@ -156,6 +159,35 @@ public class CustomerFormController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean validateCustomer(String id,String name,String address,String tel){
+
+        boolean matches = Pattern.matches("[C][0-9]{3,}",id);
+        if (!matches) {
+            new Alert(Alert.AlertType.ERROR,"Invalid Customer id").showAndWait();
+            return false;
+        }
+
+        boolean matches1 = Pattern.matches("[A-Za-z]{4,}",name);
+        if (!matches1){
+            new Alert(Alert.AlertType.ERROR,"Invalid Customer name").showAndWait();
+            return false;
+        }
+
+        boolean matches2 = Pattern.matches("[A-Za-z]",address);
+        if (!matches2){
+            new Alert(Alert.AlertType.ERROR,"Invalid Customer Address").showAndWait();
+            return false;
+        }
+
+        boolean matches3 = Pattern.matches("[0-9]{10}",tel);
+        if (!matches3){
+            new Alert(Alert.AlertType.ERROR,"Invalid Customer Address").showAndWait();
+            return false;
+        }
+
+        return true;
     }
 
     @FXML

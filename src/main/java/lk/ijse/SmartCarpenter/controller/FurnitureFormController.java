@@ -10,17 +10,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.SmartCarpenter.dto.EmployeeDto;
 import lk.ijse.SmartCarpenter.dto.FurnitureDto;
 import lk.ijse.SmartCarpenter.dto.ManufacturingDetailDto;
 import lk.ijse.SmartCarpenter.dto.tm.FurnitureTm;
 import lk.ijse.SmartCarpenter.model.AddFurnitureModel;
+import lk.ijse.SmartCarpenter.model.EmployeeModel;
 import lk.ijse.SmartCarpenter.model.FurnitureModel;
+import lk.ijse.SmartCarpenter.model.UpdateFurnitureModel;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class FurnitureFormController implements Initializable {
     @FXML
@@ -126,8 +130,9 @@ public class FurnitureFormController implements Initializable {
         double labourCost = Double.parseDouble(txtLabourCost.getText());
         LocalDate date = dtpDate.getValue();
 
-        if (code.isEmpty() || description.isEmpty() || unitPrice == 0  || qauntity == 0){
-            new Alert(Alert.AlertType.ERROR,"Fields empty").showAndWait();
+        boolean isValid = validateFurniture(code,description,txtUnitPrice.getText(),txtQuantity.getText(),empId,txtLabourCost.getText());
+
+        if (!isValid){
             return;
         }
 
@@ -136,11 +141,64 @@ public class FurnitureFormController implements Initializable {
 
         try {
             boolean isAdded =AddFurnitureModel.addFurnitureItem(dto,dtoMan);
+
+            if (isAdded){
+                new Alert(Alert.AlertType.CONFIRMATION, "furniture item saved!").show();
+                clearFields();
+                loadAllFurnitures();
+                loadFurnitureCodes();
+            }else{
+                new Alert(Alert.AlertType.ERROR, "error").show();
+            }
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
     }
+
+    private boolean validateFurniture(String code, String description, String unitPrice, String qty, String empId, String labourCost) {
+
+        boolean matches = Pattern.matches("[I][0-9]{3,}",code);
+        if (!matches) {
+            new Alert(Alert.AlertType.ERROR,"Invalid furniture code").showAndWait();
+            return false;
+        }
+
+        boolean matches1 = Pattern.matches("[0-9A-Za-z]{4,}",description);
+        if (!matches1){
+            new Alert(Alert.AlertType.ERROR,"Invalid description").showAndWait();
+            return false;
+        }
+
+        boolean matches2 = Pattern.matches("[0-9]{4,10}[.][0]|[0-9]{4,10}",unitPrice);
+        if (!matches2){
+            new Alert(Alert.AlertType.ERROR,"Invalid unit price").showAndWait();
+            return false;
+        }
+
+        boolean matches3 = Pattern.matches("[0-9]{1,3}",qty);
+        if (!matches3){
+            new Alert(Alert.AlertType.ERROR,"Invalid quantity").showAndWait();
+            return false;
+        }
+
+        boolean matches4 = Pattern.matches("[E][0-9]{3,}",empId);
+        if (!matches4) {
+            new Alert(Alert.AlertType.ERROR,"Invalid employee id").showAndWait();
+            return false;
+        }
+
+        boolean matches5 = Pattern.matches("[0-9]{4,10}[.][0]|[0-9]{4,10}",labourCost);
+        if (!matches5){
+            new Alert(Alert.AlertType.ERROR,"Invalid labour cost").showAndWait();
+            return false;
+        }
+
+        return true;
+
+    }
+
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
@@ -190,20 +248,32 @@ public class FurnitureFormController implements Initializable {
         String desc = txtDescriptionUpdate.getText();
         double unitPrice = Double.parseDouble(txtUniPriceUpdate.getText());
         int qty = Integer.parseInt(txtQuantityUpdate.getText());
+        String id = cmbEmpIdUpdate.getValue();
+        double labourCost = Double.parseDouble(txtLabourCostUpdate.getText());
+        LocalDate date = dtpDateUpdate.getValue();
+
+        boolean isValid = validateFurniture(code,desc,txtUniPriceUpdate.getText(),txtQuantityUpdate.getText(),id,txtLabourCostUpdate.getText());
+
+        if (!isValid){
+            return;
+        }
 
         FurnitureDto dto = new FurnitureDto(code,desc,unitPrice,qty);
-
+        ManufacturingDetailDto dtoMan = new ManufacturingDetailDto(code,id,labourCost,date);
+        System.out.println("2222222222222");
         try {
-            boolean isUpdated = FurnitureModel.updateItem(dto);
-            if (isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "item updated").show();
+            boolean isUpdated = UpdateFurnitureModel.updateItem(dto,dtoMan);
+            if (isUpdated){
+                new Alert(Alert.AlertType.CONFIRMATION, "updated successfully").show();
                 loadAllFurnitures();
-                loadFurnitureCodes();
                 clearFields();
+            }else{
+                new Alert(Alert.AlertType.ERROR, "error").show();
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
+
 
     }
 
@@ -236,8 +306,27 @@ public class FurnitureFormController implements Initializable {
         loadFurnitureCodes();
         setCellValueFactory();
         loadAllFurnitures();
+        loadAllEmployeeIds();
+        dtpDate.setValue(LocalDate.now());
+        dtpDateUpdate.setValue(LocalDate.now());
     }
 
+    private void loadAllEmployeeIds() {
+        ObservableList obList = FXCollections.observableArrayList();
+
+        try {
+            List<EmployeeDto> dtoList = EmployeeModel.getAllEmployeeIds();
+
+            for (EmployeeDto dto: dtoList){
+                obList.add(dto.getId());
+            }
+            cmbEmpId.setItems(obList);
+            cmbEmpIdUpdate.setItems(obList);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     private void setCellValueFactory() {
@@ -279,8 +368,17 @@ public class FurnitureFormController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
-
     }
+
+    @FXML
+    void cmbCodeUpdateOnAction(ActionEvent event) {
+        try {
+            FurnitureDto dto = FurnitureModel.getByCode(cmbCodeUpdate.getValue());
+            txtDescriptionUpdate.setText(dto.getDescription());
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+    }
+
 }

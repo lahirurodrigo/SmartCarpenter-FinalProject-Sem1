@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -71,8 +72,10 @@ public class DashboardFormController {
     }
 
     @FXML
-    void btnEmployeeOnAction(ActionEvent event) {
-        Parent roo
+    void btnEmployeeOnAction(ActionEvent event) throws IOException {
+        Parent rootNew = FXMLLoader.load(getClass().getResource("/view/employee_form.fxml"));
+        this.rootVary.getChildren().clear();
+        this.rootVary.getChildren().add(rootNew);
     }
 
     @FXML
@@ -101,7 +104,15 @@ public class DashboardFormController {
 
     @FXML
     void btnPaymentOnAction(ActionEvent event) {
+        Parent rootNew = null;
+        try {
+            rootNew = FXMLLoader.load(getClass().getResource("/view/payment_form.fxml"));
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
 
+        this.rootVary.getChildren().clear();
+        this.rootVary.getChildren().add(rootNew);
     }
 
     @FXML

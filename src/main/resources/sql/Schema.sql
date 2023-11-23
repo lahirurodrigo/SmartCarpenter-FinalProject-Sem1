@@ -1,1 +1,1 @@
-desc furniture;
+

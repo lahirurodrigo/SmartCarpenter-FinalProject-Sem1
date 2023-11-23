@@ -78,21 +78,21 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="cmbCodeUpdate" layoutX="7.0" layoutY="68.0" prefHeight="24.0" prefWidth="111.0" />
+            <JFXComboBox fx:id="cmbCodeUpdate" layoutX="7.0" layoutY="68.0" onAction="#cmbCodeUpdateOnAction" prefHeight="24.0" prefWidth="111.0" />
             <Label layoutX="11.0" layoutY="52.0" text="Select Item Code" />
-            <JFXTextField fx:id="txtDescriptionUpdate" layoutX="12.0" layoutY="133.0" prefHeight="24.0" prefWidth="428.0" />
-            <Label layoutX="7.0" layoutY="117.0" text="Description of the selected item" />
-            <TextField fx:id="txtQuantityUpdate" layoutX="283.0" layoutY="240.0" prefHeight="24.0" prefWidth="128.0">
+            <JFXTextField fx:id="txtDescriptionUpdate" layoutX="12.0" layoutY="126.0" prefHeight="24.0" prefWidth="428.0" />
+            <Label layoutX="7.0" layoutY="102.0" text="Description of the selected item" />
+            <TextField fx:id="txtQuantityUpdate" layoutX="321.0" layoutY="252.0" prefHeight="24.0" prefWidth="128.0">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </TextField>
-            <Label layoutX="118.0" layoutY="253.0" text="Quantity to add : ">
+            <Label layoutX="156.0" layoutY="264.0" text="Quantity to add : ">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-              <JFXButton fx:id="btnUpdate" buttonType="RAISED" contentDisplay="RIGHT" layoutX="331.0" layoutY="299.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Update">
+              <JFXButton fx:id="btnUpdate" buttonType="RAISED" contentDisplay="RIGHT" layoutX="360.0" layoutY="310.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Update">
                   <font>
                       <Font name="System Bold" size="10.0" />
                   </font>
@@ -100,7 +100,7 @@
                       <Cursor fx:constant="HAND" />
                   </cursor>
               </JFXButton>
-            <JFXButton fx:id="btnClearUpdate" buttonType="RAISED" contentDisplay="RIGHT" layoutX="226.0" layoutY="299.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Clear">
+            <JFXButton fx:id="btnClearUpdate" buttonType="RAISED" contentDisplay="RIGHT" layoutX="254.0" layoutY="310.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Clear">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
@@ -109,10 +109,10 @@
                </cursor>
             </JFXButton>
             <Label layoutX="188.0" layoutY="172.0" text="Unit Price : " />
-            <TextField fx:id="txtUniPriceUpdate" layoutX="286.0" layoutY="168.0" />
-            <Label layoutX="195.0" layoutY="204.0" text="Labour cost:" />
+            <TextField fx:id="txtUniPriceUpdate" layoutX="275.0" layoutY="167.0" prefHeight="26.0" prefWidth="170.0" />
+            <Label layoutX="186.0" layoutY="224.0" text="Labour cost:" />
             <JFXComboBox fx:id="cmbEmpIdUpdate" layoutX="11.0" layoutY="200.0" prefHeight="24.0" prefWidth="118.0" />
-            <JFXTextField fx:id="txtLabourCostUpdate" layoutX="283.0" layoutY="200.0" />
+            <JFXTextField fx:id="txtLabourCostUpdate" layoutX="283.0" layoutY="220.0" />
             <Label layoutX="7.0" layoutY="172.0" text="Id of employee made it" />
             <DatePicker fx:id="dtpDateUpdate" layoutX="195.0" layoutY="68.0" />
             <Label layoutX="195.0" layoutY="52.0" text="Date" />

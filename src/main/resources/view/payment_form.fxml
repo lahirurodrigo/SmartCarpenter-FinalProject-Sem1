@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="txtAmount" prefHeight="720.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.SmartCarpenter.controller.PaymentFormController">
+<AnchorPane prefHeight="720.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.SmartCarpenter.controller.PaymentFormController">
    <children>
       <AnchorPane prefHeight="70.0" prefWidth="1180.0" style="-fx-background-color: white;">
          <children>
@@ -36,7 +36,6 @@
             <Font size="15.0" />
          </font></Label>
       <TextField fx:id="txtPayId" layoutX="133.0" layoutY="120.0" />
-      <TextField fx:id="txtOId" layoutX="133.0" layoutY="157.0" />
       <DatePicker fx:id="dtpDate" layoutX="397.0" layoutY="120.0" />
       <Label layoutX="21.0" layoutY="207.0" text="Type of payment: ">
          <font>
@@ -92,7 +91,7 @@
       </JFXButton>
       <Pane layoutX="841.0" layoutY="84.0" prefHeight="580.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 25;">
          <children>
-            <TableView fx:id="tblPayments" layoutX="25.0" layoutY="104.0" prefHeight="400.0" prefWidth="275.0">
+            <TableView fx:id="tblPayments" layoutX="25.0" layoutY="104.0" prefHeight="448.0" prefWidth="275.0">
               <columns>
                 <TableColumn fx:id="colPayId" prefWidth="116.0" text="Payment Id" />
                 <TableColumn fx:id="colAmount" prefWidth="158.0" text="Amount" />
@@ -113,5 +112,6 @@
          </font>
       </Label>
       <JFXComboBox fx:id="cmbType" layoutX="163.0" layoutY="205.0" onAction="#cmbTypeOnAction" prefHeight="24.0" prefWidth="140.0" />
+      <JFXComboBox fx:id="cmbOId" layoutX="131.0" layoutY="157.0" prefHeight="24.0" prefWidth="140.0" />
    </children>
 </AnchorPane>

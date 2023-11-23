@@ -10,8 +10,8 @@ import lombok.*;
 public class EmployeeDto {
 
     private  String id;
-    private String position;
     private String name;
+    private String position;
     private String gender;
     private int age;
 

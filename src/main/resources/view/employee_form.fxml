@@ -62,19 +62,21 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label layoutX="13.0" layoutY="176.0" text="Employee Id">
+            <Label layoutX="12.0" layoutY="177.0" text="Employee Id">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label layoutX="16.0" layoutY="219.0" text="Amount">
+            <Label layoutX="15.0" layoutY="229.0" text="Amount">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label fx:id="lblSalaryIdManage" layoutX="119.0" layoutY="133.0" prefHeight="24.0" prefWidth="150.0" />
-            <TextField fx:id="txtEmpIdManage" layoutX="119.0" layoutY="173.0" />
-            <TextField fx:id="txtAmountManage" layoutX="119.0" layoutY="216.0" />
+            <Label fx:id="lblSalaryIdManage" layoutX="119.0" layoutY="133.0" prefHeight="24.0" prefWidth="150.0" textFill="#278d7f">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <TextField fx:id="txtAmountManage" layoutX="117.0" layoutY="226.0" />
             <JFXButton fx:id="btnSaveSalary" buttonType="RAISED" contentDisplay="RIGHT" layoutX="416.0" layoutY="264.0" onAction="#btnSaveSalaryOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Save">
                <font>
                   <Font name="System Bold" size="10.0" />
@@ -139,9 +141,13 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
+            <JFXComboBox fx:id="cmbEIdManage" layoutX="117.0" layoutY="174.0" prefHeight="24.0" prefWidth="118.0" />
          </children>
       </Pane>
-      <Label fx:id="lblId" layoutX="123.0" layoutY="174.0" prefHeight="24.0" prefWidth="125.0" />
+      <Label fx:id="lblId" layoutX="123.0" layoutY="174.0" prefHeight="24.0" prefWidth="125.0" textFill="#278d7f">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
       <JFXButton fx:id="btnClear" buttonType="RAISED" contentDisplay="RIGHT" layoutX="203.0" layoutY="419.0" onAction="#btnClearOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Clear">
          <font>
             <Font name="System Bold" size="10.0" />

@@ -26,33 +26,39 @@ public class PlaceOrderModel {
             connection.setAutoCommit(false);
 
             boolean isAdded = OrderModel.addOrder(oDto);
+            System.out.println(isAdded);
 
             if (isAdded){
                 boolean isSaved = FurnitureModel.updateItem(list);
+                System.out.println(isSaved);
 
                 if (isSaved){
+                    System.out.println("123456");
                     boolean isUpdated = OrderDetailModel.updateOrderDetail(dto);
+                    System.out.println(isUpdated);
+
 
                     if (isUpdated){
                         connection.commit();
+                        connection.setAutoCommit(true);
+                        return true;
                     }else{
                         connection.rollback();
+                        connection.setAutoCommit(true);
                         return false;
                     }
                 }else{
                     connection.rollback();
-                    return false;
                 }
             }else{
                 connection.rollback();
-                return false;
             }
 
         } catch (SQLException e) {
-            return false;
+            connection.rollback();
         }finally {
             connection.setAutoCommit(true);
         }
-        return true;
+        return false;
     }
 }

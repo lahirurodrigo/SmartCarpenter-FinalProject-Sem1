@@ -15,14 +15,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.SmartCarpenter.dto.CustomerDto;
 import lk.ijse.SmartCarpenter.dto.FurnitureDto;
+import lk.ijse.SmartCarpenter.dto.OrderDto;
+import lk.ijse.SmartCarpenter.dto.PlaceOrderDto;
 import lk.ijse.SmartCarpenter.dto.tm.CartTm;
 import lk.ijse.SmartCarpenter.model.CustomerModel;
 import lk.ijse.SmartCarpenter.model.FurnitureModel;
 import lk.ijse.SmartCarpenter.model.OrderModel;
+import lk.ijse.SmartCarpenter.model.PlaceOrderModel;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -208,7 +214,20 @@ public class OrderFormController implements Initializable {
 
     }
     private void setRemoveBtnAction(Button btn) {
+        btn.setOnAction((e) -> {
+            ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
 
+            Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
+
+            if (type.orElse(no) == yes) {
+                int focusedIndex = tblOrderCart.getSelectionModel().getSelectedIndex();
+
+                obList.remove(focusedIndex);
+                tblOrderCart.refresh();
+                calculateTotal();
+            }
+        });
     }
 
     private void calculateTotal() {
@@ -222,6 +241,37 @@ public class OrderFormController implements Initializable {
 
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) {
+
+        String id = lblOrderId.getText();
+        LocalDate placedDate = dtpPlaced.getValue();
+        LocalDate dueDate = dtpDue.getValue();
+        String cusId = cmbCustomerId.getValue();
+
+        Period period = Period.between(placedDate,dueDate);
+        int duration = period.getDays();
+
+        OrderDto dtoOrder = new OrderDto(id,placedDate,dueDate,duration,cusId);
+
+        List<CartTm> cartTmList = new ArrayList<>();
+        for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
+            CartTm cartTm = obList.get(i);
+
+            cartTmList.add(cartTm);
+        }
+
+        PlaceOrderDto dto = new PlaceOrderDto(dtoOrder,cartTmList);
+
+        try {
+            boolean isPlaced = PlaceOrderModel.placeOrder(dto);
+            if (isPlaced){
+                new Alert(Alert.AlertType.CONFIRMATION,"order placed successfully").show();
+            }else{
+                new Alert(Alert.AlertType.ERROR,"error").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
 
     }
 
