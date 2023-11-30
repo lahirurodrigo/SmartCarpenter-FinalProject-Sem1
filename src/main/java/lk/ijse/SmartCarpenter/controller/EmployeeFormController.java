@@ -11,10 +11,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import lk.ijse.SmartCarpenter.db.DbConnection;
 import lk.ijse.SmartCarpenter.dto.EmployeeDto;
+import lk.ijse.SmartCarpenter.dto.SalaryDto;
 import lk.ijse.SmartCarpenter.model.EmployeeModel;
+import lk.ijse.SmartCarpenter.model.SalaryModel;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import javax.lang.model.element.NestingKind;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -37,6 +45,9 @@ public class EmployeeFormController implements Initializable {
 
     @FXML
     private JFXButton btnViewSalary;
+
+    @FXML
+    private JFXButton btnPrint;
 
     @FXML
     private JFXComboBox<String> cmbGender;
@@ -106,12 +117,20 @@ public class EmployeeFormController implements Initializable {
             boolean isSaved = EmployeeModel.saveEmployee(dto);
             if (isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION, "employee saved!").show();
+                clear();
+                generateNextEmployeeId();
             }else {
                 new Alert(Alert.AlertType.ERROR, "error").show();
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
+    }
+
+    private void clear() {
+        txtName.clear();
+        txtAge.clear();
+        txtPosition.clear();
     }
 
     private boolean validateEmployee(String id,String name,String position,String age){
@@ -122,13 +141,13 @@ public class EmployeeFormController implements Initializable {
             return false;
         }
 
-        boolean matches1 = Pattern.matches("[A-Za-z]{4,}",name);
+        boolean matches1 = Pattern.matches("[A-Za-z\\s]{2,}",name);
         if (!matches1){
             new Alert(Alert.AlertType.ERROR,"Invalid Customer name").showAndWait();
             return false;
         }
 
-        boolean matches2 = Pattern.matches("[A-Za-z]",position);
+        boolean matches2 = Pattern.matches("[A-Za-z]+",position);
         if (!matches2){
             new Alert(Alert.AlertType.ERROR,"Invalid Customer Address").showAndWait();
             return false;
@@ -146,6 +165,31 @@ public class EmployeeFormController implements Initializable {
     @FXML
     void btnSaveSalaryOnAction(ActionEvent event) {
 
+        String sId = lblSalaryIdManage.getText();
+        String eId = (String) cmbEIdManage.getValue();
+        int month = Integer.parseInt(cmbMonthManage.getValue());
+        double amount = Double.parseDouble(txtAmountManage.getText());
+
+        SalaryDto dto = new SalaryDto(sId,eId,month,amount);
+
+        try {
+            boolean isSaved = SalaryModel.saveSalary(dto);
+
+            if (isSaved){
+                new Alert(Alert.AlertType.CONFIRMATION, "salary saved!").show();
+                clearSalaryFields();
+                generateNextSalaryId();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "error").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+
+    }
+
+    private void clearSalaryFields() {
+        txtAmountManage.clear();
     }
 
     @FXML
@@ -208,5 +252,28 @@ public class EmployeeFormController implements Initializable {
     }
 
     private void generateNextSalaryId() {
+        try {
+            lblSalaryIdManage.setText(SalaryModel.getNextSalaryId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void btnPrintOnAction(ActionEvent event) throws JRException, SQLException {
+        InputStream resourceAsStream = getClass().getResourceAsStream("/reports/Employee_details.jrxml");
+
+        JasperDesign load = JRXmlLoader.load(resourceAsStream);
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(load);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+                jasperReport,
+                null,
+                DbConnection.getInstance().getConnection()
+        );
+
+        JasperViewer.viewReport(jasperPrint,false);
+
     }
 }

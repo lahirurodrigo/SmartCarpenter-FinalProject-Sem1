@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -144,6 +145,7 @@
                         <Label layoutX="31.0" layoutY="22.0" text="Label" />
                      </children>
                   </Pane>
+                  <PieChart fx:id="pieChart" layoutX="546.0" layoutY="272.0" prefHeight="270.0" prefWidth="360.0" />
                </children></AnchorPane>
               <AnchorPane prefHeight="70.0" prefWidth="1180.0" style="-fx-background-color: white;" />
             <Label layoutX="15.0" layoutY="10.0" prefWidth="129.0" text="Dashboard">

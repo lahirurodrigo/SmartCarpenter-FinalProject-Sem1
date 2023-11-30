@@ -165,11 +165,11 @@ public class FurnitureFormController implements Initializable {
             return false;
         }
 
-        boolean matches1 = Pattern.matches("[0-9A-Za-z]{4,}",description);
-        if (!matches1){
-            new Alert(Alert.AlertType.ERROR,"Invalid description").showAndWait();
-            return false;
-        }
+       // boolean matches1 = Pattern.matches("[0-9A-Za-z*//s]{4,}",description);
+       // if (!matches1){
+           // new Alert(Alert.AlertType.ERROR,"Invalid description").showAndWait();
+           // return false;
+      //  }
 
         boolean matches2 = Pattern.matches("[0-9]{4,10}[.][0]|[0-9]{4,10}",unitPrice);
         if (!matches2){

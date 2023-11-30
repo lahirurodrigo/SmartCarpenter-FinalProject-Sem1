@@ -27,13 +27,13 @@ public class EmployeeModel {
 
     private static String splitEmployeeId(String currentOrderId) {
         if(currentOrderId != null) {
-            String[] split = currentOrderId.split("e0");
+            String[] split = currentOrderId.split("E0");
 
             int id = Integer.parseInt(split[1]); //01
             id++;
-            return "e00" + id;
+            return "E00" + id;
         } else {
-            return "e001";
+            return "E001";
         }
     }
 

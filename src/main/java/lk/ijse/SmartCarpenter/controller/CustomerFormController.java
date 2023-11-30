@@ -121,6 +121,8 @@ public class CustomerFormController {
 
             if (isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION,"Saved successfully").showAndWait();
+                initialize();
+                //tblCustomer.refresh();
             }
             else{
                 new Alert(Alert.AlertType.ERROR,"Error").showAndWait();
@@ -151,6 +153,7 @@ public class CustomerFormController {
             boolean isUpdated = CustomerModel.updateCustomer(dto);
 
             if (isUpdated){
+                initialize();
                 new Alert(Alert.AlertType.CONFIRMATION,"Successfully updated").showAndWait();
             }
             else{
@@ -175,7 +178,7 @@ public class CustomerFormController {
             return false;
         }
 
-        boolean matches2 = Pattern.matches("[A-Za-z]",address);
+        boolean matches2 = Pattern.matches("[A-Za-z]+",address);
         if (!matches2){
             new Alert(Alert.AlertType.ERROR,"Invalid Customer Address").showAndWait();
             return false;
@@ -192,17 +195,22 @@ public class CustomerFormController {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        txtName.clear();
+        txtId.clear();
+        txtAddress.clear();
+        txtTel.clear();
     }
 
     @FXML
     void btnClearUpdateOnAction(ActionEvent event) {
-
+        clearUpdateFields();
     }
 
     @FXML
     void btnClearViewOnAction(ActionEvent event) {
-
+        txtAddressView.clear();
+        txtIdView.clear();
+        txtNameView.clear();
     }
 
     @FXML

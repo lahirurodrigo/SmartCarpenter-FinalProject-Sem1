@@ -1,18 +1,29 @@
 package lk.ijse.SmartCarpenter.controller;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.SmartCarpenter.model.OrderDetailModel;
+import lk.ijse.SmartCarpenter.model.OrderModel;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class DashboardFormController {
+public class DashboardFormController implements Initializable {
+
+    @FXML
+    private PieChart pieChart;
 
     @FXML
     private JFXButton btnCustomer;
@@ -91,8 +102,10 @@ public class DashboardFormController {
     }
 
     @FXML
-    void btnMaterialsOnAction(ActionEvent event) {
-
+    void btnMaterialsOnAction(ActionEvent event) throws IOException {
+        Parent rootNew = FXMLLoader.load(getClass().getResource("/view/rawMaterial_form.fxml"));
+        this.rootVary.getChildren().clear();
+        this.rootVary.getChildren().add(rootNew);
     }
 
     @FXML
@@ -123,5 +136,36 @@ public class DashboardFormController {
     @FXML
     void btnToolsOnAction(ActionEvent event) {
 
+    }
+
+    void initializePieChart(){
+
+        double totalOrderAmount = OrderDetailModel.getTotalOrdedersAmount();
+
+        System.out.println(totalOrderAmount);
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Category A", 30),
+                new PieChart.Data("Category B", 20),
+                new PieChart.Data("Category C", 50)
+        );
+
+        // Setting data to the pie chart
+        pieChart.setData(pieChartData);
+
+        // Adding values to the pie chart
+        for (PieChart.Data data : pieChart.getData()) {
+            data.getNode().setOnMouseEntered(e -> {
+                // Display value on hover
+                double value = data.getPieValue();
+                // You can show the value in a Tooltip or any other UI element
+                System.out.println("Value: " + value);
+            });
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializePieChart();
     }
 }

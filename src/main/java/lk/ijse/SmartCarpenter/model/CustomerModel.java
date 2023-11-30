@@ -58,7 +58,7 @@ public class CustomerModel {
                     resultSet.getString("cus_id"),
                     resultSet.getString("name"),
                     resultSet.getString("address"),
-                    resultSet.getString("tel")
+                    resultSet.getString("email")
             ));
         }
         return list;

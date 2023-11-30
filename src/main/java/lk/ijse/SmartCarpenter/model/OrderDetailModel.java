@@ -59,4 +59,23 @@ public class OrderDetailModel {
         }
         return total;
     }
+
+    public static double getTotalOrdedersAmount() {
+        double total = 0;
+
+        try {
+            Connection connection = DbConnection.getInstance().getConnection();
+
+            PreparedStatement pstm = connection.prepareStatement("SELECT qty,unit_price FROM orderDetails");
+            ResultSet rs = pstm.executeQuery();
+
+            while(rs.next()){
+                total += rs.getInt(1)*rs.getDouble(2);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return  total;
+    }
 }
