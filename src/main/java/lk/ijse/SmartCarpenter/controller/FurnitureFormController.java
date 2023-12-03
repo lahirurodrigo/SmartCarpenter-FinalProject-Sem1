@@ -255,10 +255,10 @@ public class FurnitureFormController implements Initializable {
         txtLabourCost.clear();
         txtLabourCostUpdate.clear();
         txtLabourCostView.clear();
-        cmbEmpId.setValue(null);
-        cmbCodeView.setValue(null);
-        cmbCodeUpdate.setValue(null);
-        cmbEmpIdUpdate.setValue(null);
+        /*cmbEmpId.setValue("");
+        cmbCodeView.setValue("");
+        cmbCodeUpdate.setValue("");
+        cmbEmpIdUpdate.setValue("");*/
 
     }
 
