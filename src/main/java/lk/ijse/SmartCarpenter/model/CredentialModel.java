@@ -26,4 +26,20 @@ public class CredentialModel {
         }
         return false;
     }
+
+    public static CredentialsDto getCredentials() throws SQLException {
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM credentials");
+
+        ResultSet rs = pstm.executeQuery();
+
+        System.out.println("3333333333333");
+        CredentialsDto dto =null;
+        while(rs.next()) {
+            dto = new CredentialsDto(rs.getString(1), rs.getString(2));
+        }
+
+        return dto;
+    }
 }

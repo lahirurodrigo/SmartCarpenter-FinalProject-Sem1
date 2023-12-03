@@ -153,4 +153,50 @@ public class FurnitureModel {
         }
         return dto;
     }
+
+    public static String getNextCode() throws SQLException {
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        String sql = "SELECT f_code FROM furniture WHERE f_code LIKE 'F00%' ORDER BY CAST(SUBSTRING(f_code, 4) AS UNSIGNED) DESC LIMIT 1";
+        PreparedStatement pstm = connection.prepareStatement(sql);
+
+        ResultSet resultSet = pstm.executeQuery();
+        if(resultSet.next()) {
+            return splitCode(resultSet.getString(1));
+        }
+        return splitCode(null);
+    }
+
+    private static String splitCode(String currentOrderId) {
+        if (currentOrderId == null || currentOrderId.isEmpty() || !currentOrderId.matches("^F\\d+$")) {
+            return "F001";
+        } else {
+            String numericPart = currentOrderId.substring(3);
+            int numericValue = Integer.parseInt(numericPart);
+
+            int nextNumericValue = numericValue + 1;
+            String nextNumericPart = String.format("%0" + numericPart.length() + "d", nextNumericValue);
+
+            return "F00" + nextNumericPart;
+
+        }
+    }
+
+    public static String getAllItems() throws SQLException {
+
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        String sql = "SELECT * FROM furniture";
+        PreparedStatement pstm = connection.prepareStatement(sql);
+
+        int count = 0;
+
+        ResultSet rs = pstm.executeQuery();
+
+        while (rs.next()){
+            count++;
+        }
+
+        return String.valueOf(count);
+    }
 }

@@ -8,8 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import lk.ijse.SmartCarpenter.dto.OrderDto;
+import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.SmartCarpenter.dto.PaymentDto;
+import lk.ijse.SmartCarpenter.dto.tm.PaymentTm;
 import lk.ijse.SmartCarpenter.model.OrderDetailModel;
 import lk.ijse.SmartCarpenter.model.OrderModel;
 import lk.ijse.SmartCarpenter.model.PaymentModel;
@@ -17,9 +18,9 @@ import lk.ijse.SmartCarpenter.model.PaymentModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class PaymentFormController implements Initializable {
 
@@ -58,7 +59,7 @@ public class PaymentFormController implements Initializable {
     private Label lblPaidDetails;
 
     @FXML
-    private TableView<?> tblPayments;
+    private TableView<PaymentTm> tblPayments;
 
     @FXML
     private TextField txtAmount;
@@ -77,11 +78,24 @@ public class PaymentFormController implements Initializable {
     @FXML
     void btnMakeOnAction(ActionEvent event) {
 
+        if(txtPayId.getText().isEmpty()){new Alert(Alert.AlertType.ERROR,"empty id").show(); return;}
+        if(dtpDate.getValue() == null){new Alert(Alert.AlertType.ERROR,"empty date").show(); return;}
+        if(txtAmount.getText().isEmpty()){new Alert(Alert.AlertType.ERROR,"empty value").show(); return;}
+        if(cmbOId.getValue().isEmpty() || cmbOId.getValue() == null){
+            new Alert(Alert.AlertType.ERROR,"select a order id").show(); return;
+        }
+
         String id = txtPayId.getText();
         LocalDate date = dtpDate.getValue();
         String type =  cmbType.getValue();
         double amount = Double.parseDouble(txtAmount.getText());
         String oId = cmbOId.getValue();
+
+        boolean isValid = validatePayment(date, String.valueOf(amount));
+
+        if (!isValid){
+            return;
+        }
 
         PaymentDto dto = new PaymentDto(id,date,type,amount,oId);
 
@@ -90,6 +104,7 @@ public class PaymentFormController implements Initializable {
             boolean isSaved = PaymentModel.savePayment(dto);
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION, "payment saved successfully").show();
+                return;
             }else{
                 new Alert(Alert.AlertType.ERROR,"error").show();
             }
@@ -97,6 +112,22 @@ public class PaymentFormController implements Initializable {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
 
+    }
+
+    private boolean validatePayment(LocalDate date, String amount) {
+
+       /* boolean matches = date.isBefore(LocalDate.now());
+        if (!matches){
+            new Alert(Alert.AlertType.ERROR,"Select a valid date").showAndWait();
+            return false;
+        }*/
+
+        boolean matches2 = Pattern.matches("[0-9]{4,10}[.][0]|[0-9]{1,2}",amount);
+        if (!matches2){
+            new Alert(Alert.AlertType.ERROR,"Invalid unit price").showAndWait();
+            return false;
+        }
+        return true;
     }
 
     @FXML
@@ -130,6 +161,16 @@ public class PaymentFormController implements Initializable {
         setOrderIds();
         setTyes();
         dtpDate.setValue(LocalDate.now());
+        setNextPayId();
+        setCellValueFactory();
+    }
+
+    private void setNextPayId() {
+        try {
+            txtPayId.setText(PaymentModel.generateNextId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setTyes() {
@@ -159,5 +200,38 @@ public class PaymentFormController implements Initializable {
         cmbOId.setItems(obList);
         cmbOidPayments.setItems(obList);
         cmbOIdDetails.setItems(obList);
+    }
+
+    private void setCellValueFactory() {
+        colPayId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+    }
+
+    @FXML
+    void cmbOidPaymentsOnAction(ActionEvent event) {
+        String id = cmbOidPayments.getValue();
+        loadAllPayments(id);
+        System.out.println("11111111111");
+    }
+
+    private void loadAllPayments(String id) {
+
+        ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
+
+        try {
+            List<PaymentDto> list = PaymentModel.loadAllItems(id);
+
+            for (PaymentDto dto : list){
+                obList.add(new PaymentTm(
+                        dto.getId(),
+                        dto.getAmount()
+                ));
+            }
+            System.out.println("2222222222");
+            tblPayments.setItems(obList);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

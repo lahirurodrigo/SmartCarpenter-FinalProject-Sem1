@@ -15,6 +15,7 @@ import lk.ijse.SmartCarpenter.db.DbConnection;
 import lk.ijse.SmartCarpenter.dto.EmployeeDto;
 import lk.ijse.SmartCarpenter.dto.SalaryDto;
 import lk.ijse.SmartCarpenter.model.EmployeeModel;
+import lk.ijse.SmartCarpenter.model.ManufacturingDetailModel;
 import lk.ijse.SmartCarpenter.model.SalaryModel;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -25,6 +26,7 @@ import javax.lang.model.element.NestingKind;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -68,6 +70,12 @@ public class EmployeeFormController implements Initializable {
     private Label lblMonthView;
 
     @FXML
+    private Label lblDueSalary;
+
+    @FXML
+    private Label lblEmpNameSalary;
+
+    @FXML
     private Label lblSalaryIdManage;
 
     @FXML
@@ -100,13 +108,22 @@ public class EmployeeFormController implements Initializable {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+
+        if (txtName.getText().isEmpty()){ new Alert(Alert.AlertType.ERROR, "name can't be empty").show(); return;}
+        if (txtPosition.getText().isEmpty()){ new Alert(Alert.AlertType.ERROR, "position can't be empty").show(); return;}
+        if (txtAge.getText().isEmpty()){ new Alert(Alert.AlertType.ERROR, "age can't be empty").show(); return;}
+        if (cmbGender.getValue().isEmpty() || cmbGender.getValue()==null){
+            new Alert(Alert.AlertType.ERROR, "select a gender").show();
+            return;
+        }
+
         String id = lblId.getText();
         String name = txtName.getText();
         String position = txtPosition.getText();
         String gender = (String) cmbGender.getValue();
         int age = Integer.parseInt(txtAge.getText());
 
-        boolean isValid = validateEmployee(id, name,position,txtAge.getText());
+        boolean isValid = validateEmployee(id, name,position, String.valueOf(age));
         if (isValid == false){
             return;
         }
@@ -169,6 +186,7 @@ public class EmployeeFormController implements Initializable {
         String eId = (String) cmbEIdManage.getValue();
         int month = Integer.parseInt(cmbMonthManage.getValue());
         double amount = Double.parseDouble(txtAmountManage.getText());
+        String name = lblEmpNameSalary.getText();
 
         SalaryDto dto = new SalaryDto(sId,eId,month,amount);
 
@@ -177,6 +195,7 @@ public class EmployeeFormController implements Initializable {
 
             if (isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION, "salary saved!").show();
+                printSalaySheet(eId,name,cmbMonthManage.getValue(),txtAmountManage.getText());
                 clearSalaryFields();
                 generateNextSalaryId();
             }else {
@@ -186,6 +205,45 @@ public class EmployeeFormController implements Initializable {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
+    }
+
+    private void printSalaySheet(String eId, String name, String month, String amount) throws SQLException {
+        try {
+
+            HashMap hashMap = new HashMap();
+            hashMap.put("id", eId);
+            hashMap.put("name", name);
+            hashMap.put("month", amount);
+            hashMap.put("amount", month);
+
+            InputStream resourceAsStream = getClass().getResourceAsStream("/reports/Salary_sheet.jrxml");
+            JasperDesign load = JRXmlLoader.load(resourceAsStream);
+            JasperReport compileReport = JasperCompileManager.compileReport(load);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                    compileReport,
+                    hashMap,
+                    new JREmptyDataSource()
+            );
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+    }
+
+    @FXML
+    void cmbEIdManageOnAction(ActionEvent event) {
+        String id = (String) cmbEIdManage.getValue();
+        int month = Integer.parseInt(cmbMonthManage.getValue());
+
+        try {
+            lblEmpNameSalary.setText(EmployeeModel.getEmployeeName(id));
+            double paid = SalaryModel.getAmount(id,month);
+            double salary = ManufacturingDetailModel.getSalaryAmount(id,month);
+            double due =salary - paid;
+            lblDueSalary.setText(String.valueOf(due));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void clearSalaryFields() {

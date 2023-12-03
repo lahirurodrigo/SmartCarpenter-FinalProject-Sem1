@@ -15,7 +15,7 @@ public class EmployeeModel {
     public static String getNextEmployeeId() throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
 
-        String sql = "SELECT e_id FROM employee ORDER BY e_id DESC LIMIT 1";
+        String sql = "SELECT e_id FROM employee WHERE e_id LIKE 'E00%' ORDER BY CAST(SUBSTRING(e_id, 4) AS UNSIGNED) DESC LIMIT 1";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
         ResultSet resultSet = pstm.executeQuery();
@@ -26,14 +26,17 @@ public class EmployeeModel {
     }
 
     private static String splitEmployeeId(String currentOrderId) {
-        if(currentOrderId != null) {
-            String[] split = currentOrderId.split("E0");
-
-            int id = Integer.parseInt(split[1]); //01
-            id++;
-            return "E00" + id;
-        } else {
+        if (currentOrderId == null || currentOrderId.isEmpty() || !currentOrderId.matches("^E\\d+$")) {
             return "E001";
+        } else {
+            String numericPart = currentOrderId.substring(3);
+            int numericValue = Integer.parseInt(numericPart);
+
+            int nextNumericValue = numericValue + 1;
+            String nextNumericPart = String.format("%0" + numericPart.length() + "d", nextNumericValue);
+
+            return "E00" + nextNumericPart;
+
         }
     }
 
@@ -73,6 +76,42 @@ public class EmployeeModel {
         pstm.setString(5, String.valueOf(dto.getAge()));
 
         return pstm.executeUpdate() > 0;
+
+    }
+
+    public static String getEmployeeName(String id) throws SQLException {
+
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        String sql = "SELECT name FROM employee WHERE e_id = ?";
+        PreparedStatement pstm = connection.prepareStatement(sql);
+
+        pstm.setString(1,id);
+        ResultSet rs = pstm.executeQuery();
+
+        String name = null;
+
+        while (rs.next()){
+            name = rs.getString(1);
+        }
+        return name;
+    }
+
+    public static String getTotalEmployees() throws SQLException {
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        String sql = "SELECT * FROM employee";
+        PreparedStatement pstm = connection.prepareStatement(sql);
+
+        int count = 0;
+
+        ResultSet rs = pstm.executeQuery();
+
+        while (rs.next()){
+            count++;
+        }
+
+        return String.valueOf(count);
 
     }
 }

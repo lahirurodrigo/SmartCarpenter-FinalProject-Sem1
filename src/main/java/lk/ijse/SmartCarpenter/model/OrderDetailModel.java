@@ -1,6 +1,7 @@
 package lk.ijse.SmartCarpenter.model;
 
 import lk.ijse.SmartCarpenter.db.DbConnection;
+import lk.ijse.SmartCarpenter.dto.OrderDetailDto;
 import lk.ijse.SmartCarpenter.dto.OrderDto;
 import lk.ijse.SmartCarpenter.dto.PlaceOrderDto;
 import lk.ijse.SmartCarpenter.dto.tm.CartTm;
@@ -9,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -77,5 +79,31 @@ public class OrderDetailModel {
             throw new RuntimeException(e);
         }
         return  total;
+    }
+
+    public static List<OrderDetailDto> getOrderDetail(String id) throws SQLException {
+
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM orderDetails WHERE o_id = ?");
+        pstm.setString(1,id);
+        ResultSet rs = pstm.executeQuery();
+
+        List<OrderDetailDto> list = new ArrayList<>();
+
+        while(rs.next()){
+            OrderDetailDto dto = new OrderDetailDto(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getInt(3),
+                    rs.getDouble(4)
+                    );
+
+            list.add(dto);
+
+        }
+
+        return  list;
+
     }
 }

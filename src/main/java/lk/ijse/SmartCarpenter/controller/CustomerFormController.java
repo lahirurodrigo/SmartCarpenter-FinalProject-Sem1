@@ -99,7 +99,26 @@ public class CustomerFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String id = txtIdView.getText();
 
+        try {
+            boolean isDeleted = CustomerModel.deleteCustomer(id);
+
+            if (isDeleted){
+                new Alert(Alert.AlertType.CONFIRMATION,"Customer Deleted").showAndWait();
+                initialize();
+                clearView();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void clearView() {
+        txtIdView.clear();
+        txtNameView.clear();
+        txtTelView.clear();
+        txtAddressView.clear();
     }
 
     @FXML
@@ -107,7 +126,7 @@ public class CustomerFormController {
         String id = txtId.getText();
         String name = txtName.getText();
         String address = txtAddress.getText();
-        String tel = txtTel.getText();
+        String tel = txtTel.getText();  // in here not tel is taking instead email is taking
 
         boolean isValid = validateCustomer(id,name,address,tel);
         if (isValid == false){
@@ -122,6 +141,7 @@ public class CustomerFormController {
             if (isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION,"Saved successfully").showAndWait();
                 initialize();
+                clearFields();
                 //tblCustomer.refresh();
             }
             else{
@@ -140,7 +160,12 @@ public class CustomerFormController {
         String id = cmbIdUpdate.getValue();
         String name = txtNameUpdate.getText();
         String address = txtAddressUpdate.getText();
-        String tel = txtTelUpdate.getText();
+        String tel = txtTelUpdate.getText();  // in here not tel is taking instead email is taking
+
+        if (cmbIdUpdate.getValue() == null || cmbIdUpdate.getValue().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"select an id first").showAndWait();
+            return;
+        }
 
         boolean isValid = validateCustomer(id, name,address,tel);
         if (isValid == false){
@@ -151,10 +176,13 @@ public class CustomerFormController {
 
         try {
             boolean isUpdated = CustomerModel.updateCustomer(dto);
+            System.out.println(isUpdated);
 
             if (isUpdated){
                 initialize();
                 new Alert(Alert.AlertType.CONFIRMATION,"Successfully updated").showAndWait();
+                cmbIdUpdate.setValue(null);
+                clearUpdateFields();
             }
             else{
                 new Alert(Alert.AlertType.ERROR,"error").showAndWait();
@@ -166,27 +194,27 @@ public class CustomerFormController {
 
     private boolean validateCustomer(String id,String name,String address,String tel){
 
-        boolean matches = Pattern.matches("[C][0-9]{3,}",id);
+        boolean matches = Pattern.matches("[0-9]{10}",id);
         if (!matches) {
-            new Alert(Alert.AlertType.ERROR,"Invalid Customer id").showAndWait();
+            new Alert(Alert.AlertType.ERROR,"Enter a valid phone number").showAndWait();
             return false;
         }
 
-        boolean matches1 = Pattern.matches("[A-Za-z]{4,}",name);
+        boolean matches1 = Pattern.matches("[A-Za-z\\s]{3,}",name);
         if (!matches1){
             new Alert(Alert.AlertType.ERROR,"Invalid Customer name").showAndWait();
             return false;
         }
 
-        boolean matches2 = Pattern.matches("[A-Za-z]+",address);
+        boolean matches2 = Pattern.matches("[0-9A-Za-z\\s,/]+",address);
         if (!matches2){
             new Alert(Alert.AlertType.ERROR,"Invalid Customer Address").showAndWait();
             return false;
         }
 
-        boolean matches3 = Pattern.matches("[0-9]{10}",tel);
+        boolean matches3 = Pattern.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$",tel);
         if (!matches3){
-            new Alert(Alert.AlertType.ERROR,"Invalid Customer Address").showAndWait();
+            new Alert(Alert.AlertType.ERROR,"Invalid Customer email address").showAndWait();
             return false;
         }
 
@@ -195,6 +223,10 @@ public class CustomerFormController {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
+        clearFields();
+    }
+
+    private void clearFields() {
         txtName.clear();
         txtId.clear();
         txtAddress.clear();
@@ -211,11 +243,23 @@ public class CustomerFormController {
         txtAddressView.clear();
         txtIdView.clear();
         txtNameView.clear();
+        txtTelView.clear();
     }
 
     @FXML
     void btnViewOnAction(ActionEvent event) {
+        String id = txtIdView.getText();
 
+        try {
+            CustomerDto dto = CustomerModel.searchCustomerId(id);
+
+            txtNameView.setText(dto.getName());
+            txtAddressView.setText(dto.getAddress());
+            txtTelView.setText(dto.getTel());
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.INFORMATION,"No data for id");
+        }
     }
 
     @FXML
@@ -234,6 +278,7 @@ public class CustomerFormController {
         txtNameUpdate.setText("");
         txtAddressUpdate.setText("");
         txtTelUpdate.setText("");
+        cmbIdUpdate.setValue(null);
     }
 
     private void loadCustomerIds() {

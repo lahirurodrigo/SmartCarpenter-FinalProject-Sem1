@@ -13,5 +13,6 @@ public class ManufacturingDetailDto {
     private String empId;
     private double labourCost;
     private LocalDate date;
+    private int qty;
 
 }

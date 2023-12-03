@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -32,14 +33,15 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="txtUsername" layoutX="150.0" layoutY="368.0" prefHeight="24.0" prefWidth="299.0" promptText="type user name here" />
-            <JFXTextField fx:id="txtPassword" layoutX="150.0" layoutY="413.0" prefHeight="24.0" prefWidth="299.0" promptText="type password here" />
+            <JFXTextField fx:id="txtUsername" layoutX="150.0" layoutY="368.0" onAction="#txtUsernameOnAction" prefHeight="24.0" prefWidth="299.0" promptText="type user name here" />
             <Label layoutX="150.0" layoutY="517.0" text="forget password click here" textFill="#3de5f5" />
             <JFXButton fx:id="btnLogin" layoutX="206.0" layoutY="465.0" onAction="#btnLoginOnAction" prefHeight="24.0" prefWidth="66.0" style="-fx-background-color: #3be5f5;" text="Login" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </JFXButton>
+            <JFXButton fx:id="btnForgot" layoutX="139.0" layoutY="513.0" onAction="#btnForgotOnAction" opacity="0.0" prefHeight="24.0" prefWidth="200.0" text="Button" />
+            <JFXPasswordField fx:id="txtPassword" layoutX="150.0" layoutY="413.0" onAction="#txtPasswordOnAction" prefHeight="24.0" prefWidth="299.0" promptText="type password here" />
          </children>
       </AnchorPane>
    </children>

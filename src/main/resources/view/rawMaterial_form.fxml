@@ -87,11 +87,11 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="cmbCodeManage" layoutX="62.0" layoutY="53.0" prefHeight="24.0" prefWidth="120.0" />
+            <JFXComboBox fx:id="cmbCodeManage" layoutX="62.0" layoutY="53.0" onAction="#cmbCodeManageOnAction" prefHeight="24.0" prefWidth="120.0" />
             <JFXTextField fx:id="txtCategoryManage" layoutX="105.0" layoutY="106.0" prefHeight="24.0" prefWidth="262.0" />
             <JFXTextField fx:id="txtUnitPriceManage" layoutX="105.0" layoutY="151.0" prefHeight="24.0" prefWidth="262.0" />
             <TextField fx:id="txtQuantityManage" layoutX="198.0" layoutY="195.0" prefHeight="46.0" prefWidth="156.0" />
-            <JFXButton fx:id="btnDelete" buttonType="RAISED" contentDisplay="RIGHT" layoutX="205.0" layoutY="267.0" prefHeight="35.0" prefWidth="159.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Delete item">
+            <JFXButton fx:id="btnDelete" buttonType="RAISED" contentDisplay="RIGHT" layoutX="205.0" layoutY="267.0" onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="159.0" style="-fx-background-color: #f08080; -fx-background-radius: 10;" text="Delete item">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
@@ -99,32 +99,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="btnAddToStock" buttonType="RAISED" contentDisplay="RIGHT" layoutX="28.0" layoutY="267.0" prefHeight="35.0" prefWidth="156.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Add to stock">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </JFXButton>
-         </children>
-      </Pane>
-      <Pane layoutX="430.0" layoutY="360.0" prefHeight="257.0" prefWidth="281.0" style="-fx-background-color: white; -fx-background-radius: 25;">
-         <children>
-            <Label layoutX="6.0" layoutY="15.0" text="Edit item">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <JFXTextField fx:id="txtCategoryEdit" layoutX="17.0" layoutY="105.0" prefHeight="24.0" prefWidth="238.0" promptText="enter new caatgory here" />
-            <JFXTextField fx:id="txtUnitPriceEdit" layoutX="17.0" layoutY="150.0" prefHeight="24.0" prefWidth="238.0" promptText="enter new unit price here" />
-            <Label layoutX="6.0" layoutY="60.0" text="Code">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <JFXComboBox fx:id="cmbCodeEdit" layoutX="80.0" layoutY="57.0" prefHeight="24.0" prefWidth="111.0" />
-            <JFXButton fx:id="btnUpdate" buttonType="RAISED" contentDisplay="RIGHT" layoutX="201.0" layoutY="196.0" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Update">
+            <JFXButton fx:id="btnAddToStock" buttonType="RAISED" contentDisplay="RIGHT" layoutX="28.0" layoutY="267.0" onAction="#btnAddToStockOnAction" prefHeight="35.0" prefWidth="156.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Add to stock">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>

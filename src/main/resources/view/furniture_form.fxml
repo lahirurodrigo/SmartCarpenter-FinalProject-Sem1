@@ -15,7 +15,7 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.SmartCarpenter.controller.FurnitureFormController">
     <children>
-        <JFXButton fx:id="btnAdd" buttonType="RAISED" contentDisplay="RIGHT" layoutX="204.0" layoutY="424.0" onAction="#btnAddOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Add">
+        <JFXButton fx:id="btnAdd" buttonType="RAISED" contentDisplay="RIGHT" layoutX="297.0" layoutY="430.0" onAction="#btnAddOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Add">
             <font>
                 <Font name="System Bold" size="10.0" />
             </font>
@@ -25,8 +25,8 @@
         </JFXButton>
         <TextField fx:id="txtCode" layoutX="14.0" layoutY="136.0" prefHeight="24.0" prefWidth="146.0" />
         <TextField fx:id="txtWidth" layoutX="14.0" layoutY="202.0" prefHeight="24.0" prefWidth="67.0" />
-        <TextField fx:id="txtQuantity" layoutX="16.0" layoutY="389.0" prefHeight="24.0" prefWidth="67.0" />
-        <TextField fx:id="txtUnitPrice" layoutX="135.0" layoutY="389.0" prefHeight="24.0" prefWidth="146.0" />
+        <TextField fx:id="txtQuantity" layoutX="298.0" layoutY="267.0" prefHeight="24.0" prefWidth="67.0" />
+        <TextField fx:id="txtUnitPrice" layoutX="203.0" layoutY="330.0" prefHeight="24.0" prefWidth="146.0" />
       <AnchorPane prefHeight="70.0" prefWidth="1180.0" style="-fx-background-color: white;">
          <children>
               <Label layoutX="14.0" layoutY="14.0" text="Furniture Manage">
@@ -46,9 +46,9 @@
       <TextField fx:id="txtHeight" layoutX="141.0" layoutY="202.0" prefHeight="24.0" prefWidth="67.0" />
       <Label layoutX="16.0" layoutY="251.0" text="Description" />
       <TextField fx:id="txtDescription" layoutX="15.0" layoutY="267.0" prefHeight="24.0" prefWidth="269.0" />
-      <Label layoutX="17.0" layoutY="372.0" text="Quantity" />
-      <Label layoutX="137.0" layoutY="372.0" text="Unit Price" />
-      <JFXButton fx:id="btnClear" buttonType="RAISED" contentDisplay="RIGHT" layoutX="118.0" layoutY="424.0" onAction="#btnClearOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Clear">
+      <Label layoutX="297.0" layoutY="251.0" text="Quantity" />
+      <Label layoutX="204.0" layoutY="314.0" text="Unit Price" />
+      <JFXButton fx:id="btnClear" buttonType="RAISED" contentDisplay="RIGHT" layoutX="204.0" layoutY="430.0" onAction="#btnClearOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #BFFB8B; -fx-background-radius: 10;" text="Clear">
          <font>
             <Font name="System Bold" size="10.0" />
          </font>
@@ -100,7 +100,7 @@
                       <Cursor fx:constant="HAND" />
                   </cursor>
               </JFXButton>
-            <JFXButton fx:id="btnClearUpdate" buttonType="RAISED" contentDisplay="RIGHT" layoutX="254.0" layoutY="310.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Clear">
+            <JFXButton fx:id="btnClearUpdate" buttonType="RAISED" contentDisplay="RIGHT" layoutX="254.0" layoutY="310.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #BFFB8B; -fx-background-radius: 10;" text="Clear">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
@@ -132,7 +132,7 @@
             <Label layoutX="647.0" layoutY="120.0" text="Unit Price" />
             <JFXTextField fx:id="txtDescriptionView" layoutX="11.0" layoutY="136.0" prefHeight="24.0" prefWidth="550.0" />
             <JFXTextField fx:id="txtUnitPriceView" layoutX="648.0" layoutY="136.0" />
-              <JFXButton fx:id="btndelete" buttonType="RAISED" contentDisplay="RIGHT" layoutX="721.0" layoutY="191.0" onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #d91a1a; -fx-background-radius: 10;" text="Delete" textFill="#000000b0">
+              <JFXButton fx:id="btndelete" buttonType="RAISED" contentDisplay="RIGHT" layoutX="721.0" layoutY="191.0" onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #f08080; -fx-background-radius: 10;" text="Delete" textFill="#000000b0">
                   <font>
                       <Font name="System Bold" size="10.0" />
                   </font>
@@ -140,7 +140,7 @@
                       <Cursor fx:constant="HAND" />
                   </cursor>
               </JFXButton>
-              <JFXButton fx:id="btnView" buttonType="RAISED" contentDisplay="RIGHT" layoutX="534.0" layoutY="191.0" onAction="#btnViewOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="View">
+              <JFXButton fx:id="btnView" buttonType="RAISED" contentDisplay="RIGHT" layoutX="534.0" layoutY="191.0" onAction="#btnViewOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #F9F871; -fx-background-radius: 10;" text="View">
                   <font>
                       <Font name="System Bold" size="10.0" />
                   </font>
@@ -148,7 +148,7 @@
                       <Cursor fx:constant="HAND" />
                   </cursor>
               </JFXButton>
-            <JFXButton fx:id="btnClearView" buttonType="RAISED" contentDisplay="RIGHT" layoutX="630.0" layoutY="191.0" onAction="#btnClearViewOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C4F9FF; -fx-background-radius: 10;" text="Clear">
+            <JFXButton fx:id="btnClearView" buttonType="RAISED" contentDisplay="RIGHT" layoutX="630.0" layoutY="191.0" onAction="#btnClearViewOnAction" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #BFFB8B; -fx-background-radius: 10;" text="Clear">
                <font>
                   <Font name="System Bold" size="10.0" />
                </font>
@@ -157,13 +157,21 @@
                </cursor>
             </JFXButton>
             <TextField fx:id="txtQuantityView" layoutX="648.0" layoutY="63.0" prefHeight="50.0" prefWidth="154.0" />
+            <Label layoutX="208.0" layoutY="47.0" text="Labour cost" />
+            <JFXTextField fx:id="txtLabourCostView" layoutX="207.0" layoutY="76.0" prefHeight="24.0" prefWidth="226.0" />
          </children>
       </Pane>
-      <Label layoutX="227.0" layoutY="306.0" text="Id of employee made it" />
+      <Label layoutX="16.0" layoutY="364.0" text="Id of employee made it" />
       <Label layoutX="15.0" layoutY="314.0" text="Labour cost" />
       <TextField fx:id="txtLabourCost" layoutX="14.0" layoutY="330.0" prefHeight="24.0" prefWidth="154.0" />
-      <JFXComboBox fx:id="cmbEmpId" layoutX="226.0" layoutY="330.0" prefHeight="24.0" prefWidth="111.0" />
+      <JFXComboBox fx:id="cmbEmpId" layoutX="16.0" layoutY="389.0" onAction="#cmbEmpOnAction" prefHeight="24.0" prefWidth="111.0" />
       <DatePicker fx:id="dtpDate" layoutX="185.0" layoutY="136.0" />
       <Label layoutX="185.0" layoutY="120.0" text="Date" />
+      <Label layoutX="182.0" layoutY="364.0" text="Employee Name" />
+      <Label fx:id="lblEmployeeName" layoutX="185.0" layoutY="388.0" prefHeight="26.0" prefWidth="182.0" textFill="#8e4862">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

@@ -14,10 +14,7 @@ import lk.ijse.SmartCarpenter.dto.EmployeeDto;
 import lk.ijse.SmartCarpenter.dto.FurnitureDto;
 import lk.ijse.SmartCarpenter.dto.ManufacturingDetailDto;
 import lk.ijse.SmartCarpenter.dto.tm.FurnitureTm;
-import lk.ijse.SmartCarpenter.model.AddFurnitureModel;
-import lk.ijse.SmartCarpenter.model.EmployeeModel;
-import lk.ijse.SmartCarpenter.model.FurnitureModel;
-import lk.ijse.SmartCarpenter.model.UpdateFurnitureModel;
+import lk.ijse.SmartCarpenter.model.*;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -70,6 +67,8 @@ public class FurnitureFormController implements Initializable {
     @FXML
     private JFXComboBox<String> cmbEmpIdUpdate;
 
+    @FXML
+    private Label lblEmployeeName;
 
     @FXML
     private TextField txtLabourCost;
@@ -120,24 +119,37 @@ public class FurnitureFormController implements Initializable {
     private TextField txtWidth;
 
     @FXML
+    private JFXTextField txtLabourCostView;
+
+    @FXML
     void btnAddOnAction(ActionEvent event) {
+
+        if(txtDescription.getText().isEmpty()){new Alert(Alert.AlertType.ERROR,"insert description!").show(); return;}
+        if(txtWidth.getText().isEmpty()){new Alert(Alert.AlertType.ERROR,"insert width!").show(); return;}
+        if(txtHeight.getText().isEmpty()){new Alert(Alert.AlertType.ERROR,"insert height!").show(); return;}
+        if(txtUnitPrice.getText().isEmpty()){new Alert(Alert.AlertType.ERROR,"insert unit price!").show(); return;}
+        if(txtQuantity.getText().isEmpty()){new Alert(Alert.AlertType.ERROR,"insert Quantity to add!").show(); return;}
+        if(cmbEmpId.getValue().isEmpty() || cmbEmpId.getValue() == null){new Alert(Alert.AlertType.ERROR,"select a employee id").show(); return;}
+        if(dtpDate.getValue() == null){new Alert(Alert.AlertType.ERROR,"select a valid date").show(); return;}
 
         String code = txtCode.getText();
         String description = txtWidth.getText()+"*"+txtHeight.getText()+" "+txtDescription.getText();
         double unitPrice = Double.valueOf(txtUnitPrice.getText());
-        int qauntity = Integer.parseInt(txtQuantity.getText());
+        int quantity = Integer.parseInt(txtQuantity.getText());
         String empId = cmbEmpId.getValue();
         double labourCost = Double.parseDouble(txtLabourCost.getText());
         LocalDate date = dtpDate.getValue();
 
-        boolean isValid = validateFurniture(code,description,txtUnitPrice.getText(),txtQuantity.getText(),empId,txtLabourCost.getText());
+        System.out.println(description);
+
+        boolean isValid = validateFurniture(code,txtWidth.getText(),txtHeight.getText(),txtDescription.getText(),txtUnitPrice.getText(),txtQuantity.getText(),empId,txtLabourCost.getText());
 
         if (!isValid){
             return;
         }
 
-        FurnitureDto dto = new FurnitureDto(code,description,unitPrice,qauntity);
-        ManufacturingDetailDto dtoMan = new ManufacturingDetailDto(code,empId,labourCost,date);
+        FurnitureDto dto = new FurnitureDto(code,description,unitPrice,quantity);
+        ManufacturingDetailDto dtoMan = new ManufacturingDetailDto(code,empId,labourCost,date,quantity);
 
         try {
             boolean isAdded =AddFurnitureModel.addFurnitureItem(dto,dtoMan);
@@ -157,19 +169,41 @@ public class FurnitureFormController implements Initializable {
 
     }
 
-    private boolean validateFurniture(String code, String description, String unitPrice, String qty, String empId, String labourCost) {
+    @FXML
+    void cmbEmpOnAction(ActionEvent event) {
+        String id = cmbEmpId.getValue();
+        try {
+            lblEmployeeName.setText(EmployeeModel.getEmployeeName(id));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-        boolean matches = Pattern.matches("[I][0-9]{3,}",code);
+    private boolean validateFurniture(String code,String width,String height, String description, String unitPrice, String qty, String empId, String labourCost) {
+
+        boolean matches = Pattern.matches("[F][0-9]{3,}",code);
         if (!matches) {
             new Alert(Alert.AlertType.ERROR,"Invalid furniture code").showAndWait();
             return false;
         }
 
-       // boolean matches1 = Pattern.matches("[0-9A-Za-z*//s]{4,}",description);
-       // if (!matches1){
-           // new Alert(Alert.AlertType.ERROR,"Invalid description").showAndWait();
-           // return false;
-      //  }
+        boolean matchesWidth = Pattern.matches("[0-9.]{1,2}",width);
+        if (!matchesWidth) {
+            new Alert(Alert.AlertType.ERROR,"Invalid width").showAndWait();
+            return false;
+        }
+
+        boolean matchesHeight = Pattern.matches("[0-9.]{1,2}",width);
+        if (!matchesHeight) {
+            new Alert(Alert.AlertType.ERROR,"Invalid height").showAndWait();
+            return false;
+        }
+
+        boolean matches1 = Pattern.matches("[A-Za-z\\s]{3,}",description);
+        if (!matches1){
+            new Alert(Alert.AlertType.ERROR,"Invalid description").showAndWait();
+            return false;
+        }
 
         boolean matches2 = Pattern.matches("[0-9]{4,10}[.][0]|[0-9]{4,10}",unitPrice);
         if (!matches2){
@@ -220,6 +254,11 @@ public class FurnitureFormController implements Initializable {
         txtUnitPriceView.clear();
         txtLabourCost.clear();
         txtLabourCostUpdate.clear();
+        txtLabourCostView.clear();
+        cmbEmpId.setValue(null);
+        cmbCodeView.setValue(null);
+        cmbCodeUpdate.setValue(null);
+        cmbEmpIdUpdate.setValue(null);
 
     }
 
@@ -254,13 +293,13 @@ public class FurnitureFormController implements Initializable {
 
         boolean isValid = validateFurniture(code,desc,txtUniPriceUpdate.getText(),txtQuantityUpdate.getText(),id,txtLabourCostUpdate.getText());
 
+
         if (!isValid){
             return;
         }
 
         FurnitureDto dto = new FurnitureDto(code,desc,unitPrice,qty);
-        ManufacturingDetailDto dtoMan = new ManufacturingDetailDto(code,id,labourCost,date);
-        System.out.println("2222222222222");
+        ManufacturingDetailDto dtoMan = new ManufacturingDetailDto(code,id,labourCost,date,qty);
         try {
             boolean isUpdated = UpdateFurnitureModel.updateItem(dto,dtoMan);
             if (isUpdated){
@@ -274,6 +313,30 @@ public class FurnitureFormController implements Initializable {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
+
+    }
+
+    private boolean validateFurniture(String code, String desc, String unitPrice, String qty, String id, String text2) {
+
+        boolean matches = Pattern.matches("[F][0-9]{3,}",code);
+        if (!matches) {
+            new Alert(Alert.AlertType.ERROR,"Invalid furniture code").showAndWait();
+            return false;
+        }
+
+        boolean matches2 = Pattern.matches("[0-9]{4,10}[.][0]|[0-9]{4,10}",unitPrice);
+        if (!matches2){
+            new Alert(Alert.AlertType.ERROR,"Invalid unit price").showAndWait();
+            return false;
+        }
+
+        boolean matches3 = Pattern.matches("[0-9]{1,3}",qty);
+        if (!matches3){
+            new Alert(Alert.AlertType.ERROR,"Invalid quantity").showAndWait();
+            return false;
+        }
+
+        return true;
 
     }
 
@@ -291,6 +354,7 @@ public class FurnitureFormController implements Initializable {
             txtUnitPriceView.setText(String.valueOf(dto.getUnitPrice()));
             txtQuantityView.setText(String.valueOf(dto.getQtyOnHand()));
             txtDescriptionView.setText(dto.getDescription());
+            txtLabourCostView.setText(ManufacturingDetailModel.getLabourCost(dto.getCode()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -307,8 +371,18 @@ public class FurnitureFormController implements Initializable {
         setCellValueFactory();
         loadAllFurnitures();
         loadAllEmployeeIds();
+        generateNextFurnitureCode();
         dtpDate.setValue(LocalDate.now());
         dtpDateUpdate.setValue(LocalDate.now());
+    }
+
+    private void generateNextFurnitureCode() {
+        try {
+            String code = FurnitureModel.getNextCode();
+            txtCode.setText(code);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void loadAllEmployeeIds() {

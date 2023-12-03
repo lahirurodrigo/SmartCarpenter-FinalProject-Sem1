@@ -10,14 +10,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import lk.ijse.SmartCarpenter.model.OrderDetailModel;
-import lk.ijse.SmartCarpenter.model.OrderModel;
+import lk.ijse.SmartCarpenter.dto.tm.DashBoardTm;
+import lk.ijse.SmartCarpenter.model.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DashboardFormController implements Initializable {
@@ -53,9 +59,6 @@ public class DashboardFormController implements Initializable {
     private JFXButton btnSalary;
 
     @FXML
-    private JFXButton btnTools;
-
-    @FXML
     private AnchorPane root;
 
     @FXML
@@ -63,6 +66,21 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     private AnchorPane rootVary;
+
+    @FXML
+    private Label lblEmp;
+
+    @FXML
+    private Label lblItem;
+
+    @FXML
+    private TableView<DashBoardTm> tblOrders;
+
+    @FXML
+    private TableColumn<?, ?> colDate;
+
+    @FXML
+    private TableColumn<?, ?> colId;
 
     @FXML
     void btnCustomerOnAction(ActionEvent event) throws IOException {
@@ -97,8 +115,13 @@ public class DashboardFormController implements Initializable {
     }
 
     @FXML
-    void btnLogoutOnAction(ActionEvent event) {
-
+    void btnLogoutOnAction(ActionEvent event) throws IOException {
+        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/login_form.fxml"));
+        Scene scene = new Scene(anchorPane);
+        Stage stage = (Stage) root.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Login");
+        stage.centerOnScreen();
     }
 
     @FXML
@@ -133,32 +156,36 @@ public class DashboardFormController implements Initializable {
 
     }
 
-    @FXML
-    void btnToolsOnAction(ActionEvent event) {
-
-    }
-
     void initializePieChart(){
 
-        double totalOrderAmount = OrderDetailModel.getTotalOrdedersAmount();
+        int order = (int) OrderDetailModel.getTotalOrdedersAmount();
+        int raw = (int) RawMaterialModel.getTotal();
+        int salary = (int) SalaryModel.getTotal();
 
-        System.out.println(totalOrderAmount);
+        System.out.println("Order: "+order);
+        System.out.println("Raw: "+raw);
+
+        int or = order*100/(order+raw+salary);
+        int r = raw*100/(order+raw+salary);
+        int s = 100-(or+r);
+
+        System.out.println("or: "+or );
+        System.out.println("r: "+r );
+
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Category A", 30),
-                new PieChart.Data("Category B", 20),
-                new PieChart.Data("Category C", 50)
+                new PieChart.Data("Orders", or),
+                new PieChart.Data("Salary", s),
+                new PieChart.Data("Material cost", r)
         );
 
-        // Setting data to the pie chart
         pieChart.setData(pieChartData);
 
-        // Adding values to the pie chart
         for (PieChart.Data data : pieChart.getData()) {
             data.getNode().setOnMouseEntered(e -> {
-                // Display value on hover
+
                 double value = data.getPieValue();
-                // You can show the value in a Tooltip or any other UI element
+
                 System.out.println("Value: " + value);
             });
         }
@@ -166,6 +193,42 @@ public class DashboardFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        
         initializePieChart();
+        setCellValueFactory();
+        getAllOrderDetails();
+        try {
+            lblEmp.setText(EmployeeModel.getTotalEmployees());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            lblItem.setText(FurnitureModel.getAllItems());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void getAllOrderDetails() {
+
+        ObservableList<DashBoardTm> obList = FXCollections.observableArrayList();
+
+        try {
+            List<DashBoardTm> list = OrderModel.getAllOrders();
+
+            for (DashBoardTm tm : list){
+                obList.add(tm);
+            }
+
+            tblOrders.setItems(obList);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setCellValueFactory() {
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
     }
 }

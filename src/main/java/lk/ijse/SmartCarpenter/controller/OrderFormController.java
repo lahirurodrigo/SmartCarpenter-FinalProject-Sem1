@@ -1,5 +1,11 @@
 package lk.ijse.SmartCarpenter.controller;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
@@ -13,34 +19,35 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.SmartCarpenter.dto.CustomerDto;
-import lk.ijse.SmartCarpenter.dto.FurnitureDto;
-import lk.ijse.SmartCarpenter.dto.OrderDto;
-import lk.ijse.SmartCarpenter.dto.PlaceOrderDto;
+import lk.ijse.SmartCarpenter.dto.*;
 import lk.ijse.SmartCarpenter.dto.tm.CartTm;
-import lk.ijse.SmartCarpenter.model.CustomerModel;
-import lk.ijse.SmartCarpenter.model.FurnitureModel;
-import lk.ijse.SmartCarpenter.model.OrderModel;
-import lk.ijse.SmartCarpenter.model.PlaceOrderModel;
+import lk.ijse.SmartCarpenter.dto.tm.FurnitureTm;
+import lk.ijse.SmartCarpenter.model.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
-public class OrderFormController implements Initializable {
+public class OrderFormController  {
 
     @FXML
     private JFXButton btnAddToCart;
 
     @FXML
     private JFXButton btnNew;
+
+    @FXML
+    private JFXButton btnPrint;
+
+    @FXML
+    private JFXButton btnQR;
+
 
     @FXML
     private JFXButton btnPlaceOrder;
@@ -50,6 +57,9 @@ public class OrderFormController implements Initializable {
 
     @FXML
     private JFXComboBox<String> cmbItemCode;
+
+    @FXML
+    private JFXComboBox<String> cmbOid;
 
     @FXML
     private TableColumn<?, ?> colAction;
@@ -106,21 +116,51 @@ public class OrderFormController implements Initializable {
     private TableView<CartTm> tblOrderCart;
 
     @FXML
-    private TableView<?> tblStockInfo;
+    private TableView<FurnitureTm> tblStockInfo;
 
     @FXML
     private TextField txtQty;
 
     private ObservableList<CartTm> obList = FXCollections.observableArrayList();
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize() {
 
         setCellValueFactory();
         generateNextOrderId();
         loadCustomerIds();
         loadItemCodes();
+        loadOrderIds();
+        clearFields();
+        loadAllFurnitures();
 
+    }
+
+    private void clearFields() {
+        lblDescription.setText(null);
+        lblCustomerName.setText(null);
+        lblNetTotal.setText(null);
+        lblUnitPrice.setText(null);
+        lblQtyOnHand.setText(null);
+        txtQty.setText(null);
+        dtpDue.setValue(null);
+    }
+
+    private void loadOrderIds() {
+
+        ObservableList<String> ob = FXCollections.observableArrayList();
+
+        List<String> list = new ArrayList<>();
+
+        try {
+            list = OrderModel.loadAllIds();
+
+            for (String id : list){
+                ob.add(id);
+            }
+        } catch (SQLException e) {
+            System.out.println("");
+        }
+        cmbOid.setItems(ob);
     }
 
     private void loadItemCodes() {
@@ -133,7 +173,7 @@ public class OrderFormController implements Initializable {
             }
             cmbItemCode.setItems(obList);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("");
         }
     }
 
@@ -149,7 +189,7 @@ public class OrderFormController implements Initializable {
 
             cmbCustomerId.setItems(obList);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("");
         }
     }
 
@@ -172,10 +212,49 @@ public class OrderFormController implements Initializable {
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
         colAction.setCellValueFactory(new PropertyValueFactory<>("btn"));
+        colCodeInfo.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colQuanInfo.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
+    }
+
+    private void loadAllFurnitures() {
+
+        ObservableList<FurnitureTm> obList = FXCollections.observableArrayList();
+
+        try {
+            List<FurnitureDto> list = FurnitureModel.loadAllItems();
+
+            for (FurnitureDto dto : list){
+                obList.add(new FurnitureTm(
+                        dto.getCode(),
+                        dto.getQtyOnHand()
+                ));
+            }
+            tblStockInfo.setItems(obList);
+        } catch (SQLException e) {
+            System.out.println("");
+        }
+
     }
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
+
+        if(!validateDates()){
+            return;
+        }
+
+        if(cmbCustomerId.getValue() == null || cmbCustomerId.getValue().isEmpty()) {
+            new Alert(Alert.AlertType.ERROR,"select a customer id").show(); return;
+        }
+
+        if(cmbItemCode.getValue() == null || cmbItemCode.getValue().isEmpty()) {
+            new Alert(Alert.AlertType.ERROR,"select a item code").show(); return;
+        }
+
+        if (txtQty.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"enter the quantity to add").show(); return;
+        }
+
         String code = cmbItemCode.getValue();
         String desc = lblDescription.getText();
         int qty = Integer.parseInt(txtQty.getText());
@@ -242,10 +321,22 @@ public class OrderFormController implements Initializable {
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) {
 
+        if (cmbCustomerId.getValue().isEmpty() || cmbCustomerId.getValue() == null){
+            new Alert(Alert.AlertType.ERROR,"select a customer id").show(); return;
+        }
+
         String id = lblOrderId.getText();
         LocalDate placedDate = dtpPlaced.getValue();
         LocalDate dueDate = dtpDue.getValue();
         String cusId = cmbCustomerId.getValue();
+
+        if(!validateDates()){
+            return;
+        }
+
+        /*if (cmbCustomerId.getValue().isEmpty() || cmbCustomerId.getValue() == null){
+            new Alert(Alert.AlertType.ERROR,"select a customer id").show(); return;
+        }*/
 
         Period period = Period.between(placedDate,dueDate);
         int duration = period.getDays();
@@ -259,12 +350,18 @@ public class OrderFormController implements Initializable {
             cartTmList.add(cartTm);
         }
 
+        if(cartTmList.isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"cart is empty").show(); return;
+        }
+
         PlaceOrderDto dto = new PlaceOrderDto(dtoOrder,cartTmList);
 
         try {
             boolean isPlaced = PlaceOrderModel.placeOrder(dto);
             if (isPlaced){
                 new Alert(Alert.AlertType.CONFIRMATION,"order placed successfully").show();
+                //initialize();
+                clearFields();
             }else{
                 new Alert(Alert.AlertType.ERROR,"error").show();
             }
@@ -275,36 +372,52 @@ public class OrderFormController implements Initializable {
 
     }
 
+    private boolean validateDates() {
+
+        if (dtpDue.getValue() == null || dtpPlaced.getValue() == null){
+            new Alert(Alert.AlertType.ERROR,"select a date").show();
+            return false;
+        }
+
+        if (dtpDue.getValue().isBefore(dtpPlaced.getValue())){
+            new Alert(Alert.AlertType.ERROR,"due date cannot be before place date").show();
+            return false;
+        }
+
+        if (dtpPlaced.getValue().isBefore(LocalDate.now()) || dtpDue.getValue().isBefore(LocalDate.now())){
+            new Alert(Alert.AlertType.ERROR,"select a valid date").show();
+            return false;
+        }
+        return true;
+    }
+
     @FXML
     void cmbCustomerOnAction(ActionEvent event) {
-        String id = (String) cmbCustomerId.getValue();
-//        CustomerModel customerModel = new CustomerModel();
+        String id =  cmbCustomerId.getValue();
+
         try {
             CustomerDto customerDto = CustomerModel.searchCustomerId(id);
             lblCustomerName.setText(customerDto.getName());
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 
     @FXML
     void cmbItemOnAction(ActionEvent event) {
-        String code = (String) cmbItemCode.getValue();
+        String code =  cmbItemCode.getValue();
 
         txtQty.requestFocus();
 
-        FurnitureDto dto = null;
         try {
-            dto = FurnitureModel.searchItem(code);
+            FurnitureDto dto = FurnitureModel.searchItem(code);
             lblDescription.setText(dto.getDescription());
             lblUnitPrice.setText(String.valueOf(dto.getUnitPrice()));
             lblQtyOnHand.setText(String.valueOf(dto.getQtyOnHand()));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
-
-
     }
 
     @FXML
@@ -312,5 +425,66 @@ public class OrderFormController implements Initializable {
         btnAddToCartOnAction(event);
     }
 
+    @FXML
+    void btnPrintOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnQROnAction(ActionEvent event) {
+
+        String id = cmbOid.getValue();
+
+        if (cmbOid.getValue() == null || cmbOid.getValue().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"choose an id first").showAndWait();
+            return;
+        }
+
+        List<OrderDetailDto> list = null;
+
+        try {
+             list = OrderDetailModel.getOrderDetail(id);
+
+            try {
+
+                for(OrderDetailDto dto : list){
+
+                    LocalDate date = LocalDate.now();
+                    String itemCode = dto.getCode();
+                    double uniPrice = dto.getUniPrice();
+
+                    for (int i = 0; i < dto.getQty(); i++) {
+
+                        System.out.println(i);
+
+                        String data = "MH Furniture\nItem code: "+itemCode+"  Date of sold: "+date+"  Unit Price: "+uniPrice;
+                        String filePath = "/home/lahiru/Documents/QR Codes/"+dto.getCode()+" "+i+" "+date;
+                        int width = 300;
+                        int height = 300;
+                        generateQRCode(data, filePath, width, height);
+                    }
+
+                    new Alert(Alert.AlertType.INFORMATION,"QR Codes Generated").showAndWait();
+                }
+            } catch (WriterException | IOException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void generateQRCode(String data, String filePath, int width, int height) throws WriterException, IOException {
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, width, height, hints);
+
+        Path path = FileSystems.getDefault().getPath(filePath);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+        System.out.println("QR code generated successfully at: " + filePath);
+    }
 
 }

@@ -32,7 +32,7 @@ public class CustomerModel {
 
         Connection connection = DbConnection.getInstance().getConnection();
 
-        String sql = "UPDATE customer SET name= ?,address=?,tel=? WHERE cus_id=?";
+        String sql = "UPDATE customer SET name= ?,address=?,email=? WHERE cus_id=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
         pstm.setString(1, dto.getName());
@@ -84,5 +84,15 @@ public class CustomerModel {
             );
         }
         return dto;
+    }
+
+    public static boolean deleteCustomer(String id) throws SQLException {
+
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        PreparedStatement pstm = connection.prepareStatement("DELETE FROM customer WHERE cus_id = ?");
+        pstm.setString(1,id);
+
+        return pstm.executeUpdate()>0;
     }
 }
