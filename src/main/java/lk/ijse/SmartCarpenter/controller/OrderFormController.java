@@ -344,10 +344,14 @@ public class OrderFormController  {
         OrderDto dtoOrder = new OrderDto(id,placedDate,dueDate,duration,cusId);
 
         List<CartTm> cartTmList = new ArrayList<>();
-        for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
+        /*for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
             CartTm cartTm = obList.get(i);
 
             cartTmList.add(cartTm);
+        }*/
+
+        for (CartTm tm : obList){
+            cartTmList.add(tm);
         }
 
         if(cartTmList.isEmpty()){
